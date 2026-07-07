@@ -37,6 +37,8 @@ h1{font-size:19px;margin:0 0 2px;letter-spacing:.02em;text-wrap:balance}
 .card.safe{border-left-color:var(--safe)}.card.exempt{border-left-color:var(--exempt)}.card.warn{border-left-color:var(--warn)}
 .card .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .card .nm{font-size:16px;font-weight:700}
+mark{background:#fff2ac;color:inherit;border-radius:3px;padding:0 1px;font-weight:inherit}
+.decl mark{background:#ffe9a8}
 .badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
 .badge.safe{background:var(--safeBg);color:var(--safe)}.badge.exempt{background:var(--exemptBg);color:var(--exempt)}.badge.warn{background:var(--warnBg);color:var(--warn)}
 .clabel{font-size:10px;color:var(--muted);letter-spacing:.02em;margin-bottom:2px}
@@ -143,6 +145,24 @@ let filt='all';
 const $=s=>document.querySelector(s);
 function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function nd(s){return (s||'').replace(/\D/g,'')}
+// 検索正規化: 全角英数記号→半角・全角空白→半角・カタカナ→ひらがな・小文字化(Ｔシャツ/マンガ=まんが等を同一視)
+function nrm(s){return (s||'')
+  .replace(/[！-～]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0))
+  .replace(/　/g,' ')
+  .replace(/[ァ-ヶ]/g,c=>String.fromCharCode(c.charCodeAt(0)-96))
+  .toLowerCase();}
+// 読み(ひらがな)→漢字/英語 シノニム(かな検索で漢字kwにヒットさせる)。キーは正規化済ひらがな
+const SYN={
+ 'まんが':['漫画','comic'],'こみっく':['漫画','comic'],'ほん':['本','書籍','book'],
+ 'しょせき':['本','書籍','book'],'ざっし':['雑誌','magazine'],'しゃしんしゅう':['写真集'],
+ 'えほん':['絵本'],'ずかん':['図鑑'],'しんぶん':['新聞'],'とけい':['時計','watch'],
+ 'うでどけい':['腕時計','watch'],'さいふ':['財布','wallet'],'かわざいふ':['革財布'],
+ 'ゆびわ':['指輪','ring'],'さら':['皿','plate','dish'],'こうすい':['香水','perfume','fragrance'],
+ 'せんす':['扇子'],'しきし':['色紙'],'めがね':['メガネ','眼鏡','glasses'],
+ 'かんばっじ':['缶バッジ','badge'],'ばっじ':['バッジ','缶バ','badge'],'あきびん':['空き瓶'],
+ 'あきばこ':['空き箱'],'おまもり':['お守り'],'てぬぐい':['手ぬぐい','手拭'],'こけし':['こけし'],
+ 'ぬのばっぐ':['布製バッグ'],'ゆかた':['浴衣'],'はっぴ':['はっぴ'],'ゆのみ':['湯呑','湯のみ'],
+};
 function rateNum(rt){if(!rt)return 1e9;if(/free/i.test(rt))return 0;const m=rt.match(/([\d.]+)%/);return m?parseFloat(m[1]):5e8;}
 function optsTable(o){
   if(!o) return '';
@@ -171,16 +191,38 @@ function doCopy(el){const v=el.dataset.copy;
   if(navigator.clipboard)navigator.clipboard.writeText(v).catch(()=>{});
   toast('コピー: '+(v.length>42?v.slice(0,42)+'…':v));}
 function render(){
-  const q=$('#q').value.trim().toLowerCase();
-  const terms=q.split(/\s+/).filter(Boolean);
-  let list=DATA.items.filter(it=>{
-    if(filt==='check'){if(it.valid!=='要確認')return false;}
-    else if(filt!=='all'&&it.v!==filt)return false;
-    if(!terms.length)return true;
-    const hay=(it.name+' '+it.kw+' '+it.decl+' '+it.hts+' '+it.hs6).toLowerCase();
-    return terms.every(t=>hay.includes(t));
-  });
-  $('#count').textContent=list.length+' 件';
+  const q=$('#q').value.trim();
+  const rawTerms=q.split(/[\s　]+/).filter(Boolean);          // ハイライト用(素の入力)
+  const terms=rawTerms.map(nrm);
+  // フィールド(正規化済)にtが直接 or シノニム経由で含まれるか
+  const fhit=(field,t)=>{if(field.includes(t))return true;const sy=SYN[t];
+    if(sy){for(const s of sy)if(field.includes(nrm(s)))return true;}return false;};
+  const inFilt=it=>filt==='check'?it.valid==='要確認':(filt==='all'||it.v===filt);
+  const hayOf=it=>nrm(it.name+' '+it.kw+' '+it.decl+' '+it.hts+' '+it.hs6);
+  const pool=DATA.items.filter(inFilt);
+  let list=!terms.length?pool:pool.filter(it=>terms.every(t=>fhit(hayOf(it),t)));
+  let loose=false;
+  // 全語一致が0なら「いずれか一致(OR)」にフォールバック(複数語で行き止まりにしない)
+  if(terms.length&&!list.length){
+    list=pool.filter(it=>terms.some(t=>fhit(hayOf(it),t)));
+    loose=list.length>0;
+  }
+  // 関連度順: 品名一致>申告名一致>コード一致>kwのみ一致(はっぴが「シャツ」で上位に来る等を防ぐ)
+  if(terms.length){
+    const sc=it=>{const nm=nrm(it.name),dc=nrm(it.decl),cd=(it.hts+' '+it.hs6),kw=nrm(it.kw);let s=0;
+      for(const t of terms){
+        const syPre=(SYN[t]||[]).some(x=>nm.startsWith(nrm(x)));
+        if(nm===t)s+=1000;else if(nm.startsWith(t)||syPre)s+=300;else if(fhit(nm,t))s+=150;
+        else if(fhit(dc,t))s+=12;else if(cd.includes(t))s+=8;else if(fhit(kw,t))s+=1;}
+      return s;};
+    list=list.map((it,i)=>[it,i]).sort((a,b)=>sc(b[0])-sc(a[0])||a[1]-b[1]).map(x=>x[0]);
+  }
+  // 一致文字のハイライト(esc後に素の検索語＋正規化形で太字マーカー・単一パス)
+  const pats=[...new Set(rawTerms.flatMap(rt=>[rt,nrm(rt)]).filter(x=>x&&x.length>=1))]
+    .map(p=>p.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'));
+  const hlRe=pats.length?new RegExp('('+pats.join('|')+')','gi'):null;
+  const hl=raw=>hlRe?esc(raw).replace(hlRe,'<mark>$1</mark>'):esc(raw);
+  $('#count').textContent=list.length+' 件'+(loose?'（全語一致なし → 一部一致を表示）':'');
   const R=$('#results');
   if(!list.length){R.innerHTML='<div class="empty">該当なし。別の言い方（例: キーホルダー→キーチェーン、ぬいぐるみ→マスコット）や、下の「詳細HTS検索」もお試しを。</div>';return;}
   R.innerHTML=list.map(it=>{
@@ -193,9 +235,9 @@ function render(){
     const note = it.note ? `<div class="note">${esc(it.note)}</div>` : '';
     const rate = it.rate ? `<span class="codeblk"><span class="clabel">参考税率(米国)</span><span class="rate">${esc(it.rate)}</span></span>` : '';
     return `<div class="card ${it.v}">
-     <div class="top"><div class="nm">${esc(it.name)}</div>${it.air==='1'?'<span class="badge air">✈️注意</span>':''}<span class="badge ${it.v}">${esc(it.label)}</span></div>
+     <div class="top"><div class="nm">${hl(it.name)}</div>${it.air==='1'?'<span class="badge air">✈️注意</span>':''}<span class="badge ${it.v}">${esc(it.label)}</span></div>
      <div class="declbox"><div class="clabel">Cpass申告名称<span class="copyhint">タップでコピー ▶</span></div>
-       <div class="decl copyable" tabindex="0" role="button" data-copy="${esc(it.decl)}">${esc(it.decl)}</div></div>
+       <div class="decl copyable" tabindex="0" role="button" data-copy="${esc(it.decl)}">${hl(it.decl)}</div></div>
      <div class="codes">
        <span class="codeblk"><span class="clabel">HTS(10桁・Cpass用)</span><span class="code copyable" tabindex="0" role="button" data-copy="${nd(it.hts)}">${nd(it.hts)}</span></span>
        <span class="codeblk"><span class="clabel">HS(6桁)</span><span class="code copyable hs6" tabindex="0" role="button" data-copy="${esc(it.hs6)}">${esc(it.hs6)}</span></span>
