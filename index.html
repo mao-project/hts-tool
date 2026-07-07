@@ -185,7 +185,7 @@ $('#chips').addEventListener('click',e=>{const t=e.target.closest('.chip');if(!t
 $('#chips').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.dataset.f){e.preventDefault();e.target.click()}});
 $('#q').addEventListener('input',render);
 const toTop=()=>{if(window.scrollY>4)window.scrollTo({top:0,behavior:'smooth'})};
-$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){toTop();$('#q').blur();}});
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.isComposing&&e.keyCode!==229){toTop();$('#q').blur();}});
 function hs6(code){const d=(code||'').replace(/\D/g,'').slice(0,6);return d.length>=6?d.slice(0,4)+'.'+d.slice(4,6):esc(code);}
 function renderFull(){
   const q=$('#q2').value.trim().toLowerCase();const terms=q.split(/\s+/).filter(Boolean);
