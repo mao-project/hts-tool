@@ -74,6 +74,9 @@ background:#f0f3f7;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px 
 .optstbl th:last-child,.optstbl td:last-child{text-align:right}
 .optstbl.lft th,.optstbl.lft td{text-align:left!important;vertical-align:top}
 .optstbl.lft td:first-child{white-space:nowrap;font-weight:600}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#eef2f7;border:1px solid var(--line);
+border-radius:4px;padding:0 4px;font-size:.92em;white-space:nowrap}
+.cpscbox code{background:rgba(255,255,255,.7)}
 .optstbl td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 .optstbl tbody tr:last-child td{border-bottom:none}
 .optstbl td:first-child{color:var(--ink2);padding-right:10px;line-height:1.35}
@@ -137,17 +140,20 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <div id="results"></div>
 
 <div class="section">
-<h2>CPSC 免除条件（Cpass公式ガイド）</h2>
-<p>🟦対象品でも、下記に該当すれば<b>証明書は不要</b>。ただし<b>Cpass上で「免除」を自主申告する必要</b>があります。<b>免除タイプを誤ると通関遅延</b>の原因になります（Cpass公式FAQ）。<br>
+<h2>CPSC 免除申告（Cpass「CPSC情報を追加」画面の選び方）</h2>
+<p>🟦対象品でも、下記に該当すれば<b>証明書は不要</b>。ただし<b>Cpassで「免除」を自主申告する必要</b>があります。<b>免除タイプを誤ると通関遅延</b>の原因になります（Cpass公式FAQ）。<br>
+Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私のSKUは免除されています」</b>を選択（他は「参照PGAメッセージセット」「PGAメッセージセット全文」）→ 下表の<b>カテゴリ</b>と<b>状態</b>を選んで提出。<br>
 施行 <b>2026-07-08</b>／Cpassオンライン免除申告は <b>7/15</b> 稼働（それ以前はオフライン対応）。対象は<b>米国本土＋米国領</b>(MP/MH/GU/FM/PW/AS/PR/VI)宛のみ。</p>
-<details class="optsdd"><summary tabindex="0">免除タイプ <b>3カテゴリ</b> ・ 成人向けアパレルの素材条件つき</summary>
-<div class="opts"><div class="optshdr">Cpassの「私のSKUは免除対象です」で選択する条件（公式ガイドより）</div>
-<table class="optstbl lft"><thead><tr><th>免除カテゴリー</th><th>条件</th></tr></thead><tbody>
-<tr><td>子供向け玩具製品</td><td>ビンテージ品／アンティーク品／<b>13歳以上を対象とした製品</b></td></tr>
-<tr><td><b>中古の成人向け製品</b></td><td>（全品中古・成人向けの当店はこれが基本）</td></tr>
-<tr><td>成人向けアパレル製品</td><td>①アクリル・モダクリル・ナイロン・ポリアミド・オレフィン・ポリプロピレン・ウール・カシミヤ・ポリエステルの<b>いずれかを含む素材</b><br>②または<b>生地重量2.6 oz/yd²以上</b>かつ次の生地：アセテート／竹(レーヨン系)／キャンバス／カシミヤ混紡／シフォン／コットン100%／コットン混紡／クレープ／ガーゼ／ジョーゼット／ニット／レース／リネン・麻織物／リネン混紡／メッシュ・ネット／モダール／モダール混紡／ナイロン・スパンデックス混紡／オーガンジー／オックスフォード／ポリエステル・レーヨン混紡／ポリエステル・スパンデックス混紡／レーヨン・ビスコース100%／サテン／シルク／スパンデックス・エラスタン／タフタ／ツイル／ボイル／ウール混紡</td></tr>
+<details class="optsdd"><summary tabindex="0">免除の選択肢 <b>カテゴリ2 × 状態5</b> ・ 当店の該当先つき</summary>
+<div class="opts"><div class="optshdr">Cpass「このSKUが属する状態を選択してください」の実画面どおりの構造</div>
+<table class="optstbl lft"><thead><tr><th>カテゴリ</th><th>状態</th><th>当店で該当する品目</th></tr></thead><tbody>
+<tr><td rowspan="3">Toy<br><span class="g">玩具</span></td><td>Antique</td><td class="g">—（アンティーク品）</td></tr>
+<tr><td><b>Age&gt;13</b><br><span class="g">＝14歳以上向け</span></td><td><b>ぬいぐるみ等の玩具</b>（申告名称が <code>for ages 14 and up</code> なのでこれ）</td></tr>
+<tr><td>Vintage</td><td class="g">—（ビンテージ品）</td></tr>
+<tr><td rowspan="2">Adult Product<br><span class="g">成人向け製品</span></td><td><b>Used</b><br><span class="g">＝中古</span></td><td><b>宝石・アクセサリー（模造ジュエリー）ほか玩具以外のほぼ全品</b>。当店は全品中古なのでこれが基本</td></tr>
+<tr><td>Adult Apparel with:<br><span class="g">＝成人向けアパレル（素材条件）</span></td><td>成人向けアパレルを<b>素材条件</b>で出す場合。①アクリル・モダクリル・ナイロン・ポリアミド・オレフィン・ポリプロピレン・ウール・カシミヤ・ポリエステルの<b>いずれかを含む</b>／②または<b>生地重量2.6 oz/yd²以上</b>かつ：アセテート／竹(レーヨン系)／キャンバス／カシミヤ混紡／シフォン／コットン100%／コットン混紡／クレープ／ガーゼ／ジョーゼット／ニット／レース／リネン・麻織物／リネン混紡／メッシュ・ネット／モダール／モダール混紡／ナイロン・スパンデックス混紡／オーガンジー／オックスフォード／ポリエステル・レーヨン混紡／ポリエステル・スパンデックス混紡／レーヨン・ビスコース100%／サテン／シルク／スパンデックス・エラスタン／タフタ／ツイル／ボイル／ウール混紡<br><span class="g">※中古アパレルなら Used でも可</span></td></tr>
 </tbody></table>
-<div class="optshdr" style="margin-top:8px">▶ <b>証明書を出す場合</b>：Full PGA=製造者情報＋第三者試験機関の試験情報が必要／Reference(Brief) PGA=基本情報と証明書番号のみ。証明書種別は CPC(子供向け製品証明書) か GCC(一般適合証明書)。<br>
+<div class="optshdr" style="margin-top:8px">▶ <b>証明書を出す場合</b>：「PGAメッセージセット全文」=製造者情報＋第三者試験機関の試験情報が必要／「参照PGAメッセージセット」=基本情報と証明書番号のみ。証明書種別は CPC(子供向け製品証明書) か GCC(一般適合証明書)。<br>
 ▶ <b>注意</b>：SKUプリセットの変更は<b>変更後の新規注文にのみ</b>反映。ラベル生成後は編集不可（未設定なら追加のみ可）。</div>
 </div></details>
 </div>
@@ -311,12 +317,13 @@ function render(){
       ? `<div class="warnchip">⚠️ コード要確認（最新HTS表と要照合）${it.fix?'：'+esc(it.fix):''}</div>` : '';
     const airb = it.air==='1'
       ? `<div class="airchip">✈️ 航空便注意：${esc(it.airnote||'引火性・電池・磁石等の可能性。危険物申告・配送手段・梱包に注意')}</div>` : '';
-    // Cpassで選ぶ免除タイプ(誤選択は通関遅延の原因・Cpass公式FAQ Q7)
+    // Cpass「CPSC情報を追加」→「私のSKUは免除されています」で選ぶ カテゴリ＞状態
+    // (誤選択は通関遅延の原因・Cpass公式FAQ Q7。実画面はカテゴリ2×状態5の階層)
     const etype = it.cpsccat==='Toys'
-        ? '「子供向け玩具製品 → 13歳以上を対象とした製品」（申告名称が for ages 14 and up のため）。中古なら「中古の成人向け製品」でも可'
-      : it.cpsccat==='Imitation Jewelry' ? '「中古の成人向け製品」'
-      : it.v==='vol' ? '「成人向けアパレル製品」（素材条件を満たす）または「中古の成人向け製品」' : '';
-    const eline = etype?`<br>▶ <b>Cpassで選ぶ免除タイプ</b>：${esc(etype)}`:'';
+        ? '<code>Toy</code> ＞ <code>Age&gt;13</code>（申告名称が for ages 14 and up のため）'
+      : it.cpsccat==='Imitation Jewelry' ? '<code>Adult Product</code> ＞ <code>Used</code>（全品中古のため）'
+      : it.v==='vol' ? '<code>Adult Product</code> ＞ <code>Used</code>（全品中古のため。素材条件で出すなら <code>Adult Apparel with:</code>）' : '';
+    const eline = etype?`<br>▶ <b>Cpassの免除選択</b>：${etype}`:'';
     const cpsc = it.v==='exempt'
       ? `<div class="cpscbox must">🟦 <b>CPSC eFiling 対象</b>（公式HTSリスト掲載${it.cpsccat?'：'+esc(it.cpsccat):''}）— CBPがフラグします。<b>証明書または免除申告が必須</b>（未提出は貨物留置）${eline}</div>`
       : (it.v==='vol'
