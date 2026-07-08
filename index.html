@@ -72,6 +72,8 @@ background:#f0f3f7;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px 
 .optstbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .optstbl th{color:var(--muted);font-weight:600;font-size:10.5px;text-align:left;padding:3px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
 .optstbl th:last-child,.optstbl td:last-child{text-align:right}
+.optstbl.lft th,.optstbl.lft td{text-align:left!important;vertical-align:top}
+.optstbl.lft td:first-child{white-space:nowrap;font-weight:600}
 .optstbl td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 .optstbl tbody tr:last-child td{border-bottom:none}
 .optstbl td:first-child{color:var(--ink2);padding-right:10px;line-height:1.35}
@@ -133,6 +135,22 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 </div></div>
 <div class="count" id="count"></div>
 <div id="results"></div>
+
+<div class="section">
+<h2>CPSC 免除条件（Cpass公式ガイド）</h2>
+<p>🟦対象品でも、下記に該当すれば<b>証明書は不要</b>。ただし<b>Cpass上で「免除」を自主申告する必要</b>があります。<b>免除タイプを誤ると通関遅延</b>の原因になります（Cpass公式FAQ）。<br>
+施行 <b>2026-07-08</b>／Cpassオンライン免除申告は <b>7/15</b> 稼働（それ以前はオフライン対応）。対象は<b>米国本土＋米国領</b>(MP/MH/GU/FM/PW/AS/PR/VI)宛のみ。</p>
+<details class="optsdd"><summary tabindex="0">免除タイプ <b>3カテゴリ</b> ・ 成人向けアパレルの素材条件つき</summary>
+<div class="opts"><div class="optshdr">Cpassの「私のSKUは免除対象です」で選択する条件（公式ガイドより）</div>
+<table class="optstbl lft"><thead><tr><th>免除カテゴリー</th><th>条件</th></tr></thead><tbody>
+<tr><td>子供向け玩具製品</td><td>ビンテージ品／アンティーク品／<b>13歳以上を対象とした製品</b></td></tr>
+<tr><td><b>中古の成人向け製品</b></td><td>（全品中古・成人向けの当店はこれが基本）</td></tr>
+<tr><td>成人向けアパレル製品</td><td>①アクリル・モダクリル・ナイロン・ポリアミド・オレフィン・ポリプロピレン・ウール・カシミヤ・ポリエステルの<b>いずれかを含む素材</b><br>②または<b>生地重量2.6 oz/yd²以上</b>かつ次の生地：アセテート／竹(レーヨン系)／キャンバス／カシミヤ混紡／シフォン／コットン100%／コットン混紡／クレープ／ガーゼ／ジョーゼット／ニット／レース／リネン・麻織物／リネン混紡／メッシュ・ネット／モダール／モダール混紡／ナイロン・スパンデックス混紡／オーガンジー／オックスフォード／ポリエステル・レーヨン混紡／ポリエステル・スパンデックス混紡／レーヨン・ビスコース100%／サテン／シルク／スパンデックス・エラスタン／タフタ／ツイル／ボイル／ウール混紡</td></tr>
+</tbody></table>
+<div class="optshdr" style="margin-top:8px">▶ <b>証明書を出す場合</b>：Full PGA=製造者情報＋第三者試験機関の試験情報が必要／Reference(Brief) PGA=基本情報と証明書番号のみ。証明書種別は CPC(子供向け製品証明書) か GCC(一般適合証明書)。<br>
+▶ <b>注意</b>：SKUプリセットの変更は<b>変更後の新規注文にのみ</b>反映。ラベル生成後は編集不可（未設定なら追加のみ可）。</div>
+</div></details>
+</div>
 
 <div class="section">
 <h2>詳細HTS検索（CPSC公式eFiling対象 590コード・全23カテゴリ）</h2>
@@ -293,10 +311,16 @@ function render(){
       ? `<div class="warnchip">⚠️ コード要確認（最新HTS表と要照合）${it.fix?'：'+esc(it.fix):''}</div>` : '';
     const airb = it.air==='1'
       ? `<div class="airchip">✈️ 航空便注意：${esc(it.airnote||'引火性・電池・磁石等の可能性。危険物申告・配送手段・梱包に注意')}</div>` : '';
+    // Cpassで選ぶ免除タイプ(誤選択は通関遅延の原因・Cpass公式FAQ Q7)
+    const etype = it.cpsccat==='Toys'
+        ? '「子供向け玩具製品 → 13歳以上を対象とした製品」（申告名称が for ages 14 and up のため）。中古なら「中古の成人向け製品」でも可'
+      : it.cpsccat==='Imitation Jewelry' ? '「中古の成人向け製品」'
+      : it.v==='vol' ? '「成人向けアパレル製品」（素材条件を満たす）または「中古の成人向け製品」' : '';
+    const eline = etype?`<br>▶ <b>Cpassで選ぶ免除タイプ</b>：${esc(etype)}`:'';
     const cpsc = it.v==='exempt'
-      ? `<div class="cpscbox must">🟦 <b>CPSC eFiling 対象</b>（公式HTSリスト掲載${it.cpsccat?'：'+esc(it.cpsccat):''}）— CBPがフラグします。<b>証明書または免除申告が必須</b>（未提出は貨物留置）</div>`
+      ? `<div class="cpscbox must">🟦 <b>CPSC eFiling 対象</b>（公式HTSリスト掲載${it.cpsccat?'：'+esc(it.cpsccat):''}）— CBPがフラグします。<b>証明書または免除申告が必須</b>（未提出は貨物留置）${eline}</div>`
       : (it.v==='vol'
-      ? `<div class="cpscbox opt">🟨 <b>公式HTSリスト外</b>。ただし着用アパレルは16 CFR 1610(可燃性)の規制品目。CBPの自動フラグは無いが、<b>免除の自主申告</b>を行うとCPSCのリスクスコア上有利</div>` : '');
+      ? `<div class="cpscbox opt">🟨 <b>公式HTSリスト外</b>。ただし着用アパレルは16 CFR 1610(可燃性)の規制品目。CBPの自動フラグは無いが、<b>免除の自主申告</b>を行うとCPSCのリスクスコア上有利${eline}</div>` : '');
     const alt = (it.alt||it.altdecl)
       ? `<div class="altbox">別コード候補: ${esc(it.alt||'')}${it.altdecl?'／'+esc(it.altdecl):''}</div>` : '';
     const note = it.note ? `<div class="note">${esc(it.note)}</div>` : '';
