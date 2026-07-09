@@ -203,7 +203,10 @@ appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
 td.c{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap}
-.tag{font-size:10.5px;padding:2px 7px;border-radius:999px}
+/* 詳細HTS検索テーブル: データ列(HTS/HS6/類/対応)は折り返さず、品目概要だけ折り返す */
+.htstbl th,.htstbl td{white-space:nowrap}
+.htstbl th.desc,.htstbl td.desc{white-space:normal;width:100%;min-width:150px}
+.tag{display:inline-block;font-size:10.5px;padding:2px 7px;border-radius:999px;white-space:nowrap}
 .tag.exempt{background:var(--exemptBg);color:var(--exempt)}.tag.warn{background:var(--warnBg);color:var(--warn)}
 .tag.amb{background:var(--volBg);color:var(--vol);margin-left:5px;white-space:nowrap}
 .foot{margin-top:24px;font-size:11px;color:var(--muted);line-height:1.7}
@@ -296,8 +299,8 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <select id="catf" aria-label="カテゴリで絞り込み"><option value="">全カテゴリ（590）</option></select>
 </div>
 <div class="count" id="count2"></div>
-<div style="overflow-x:auto"><table><thead>
-<tr><th>米国HTS(10桁)</th><th>HS(6桁)</th><th>類</th><th>品目概要</th><th>対応</th></tr></thead><tbody id="fbody"></tbody></table></div>
+<div style="overflow-x:auto"><table class="htstbl"><thead>
+<tr><th>米国HTS(10桁)</th><th>HS(6桁)</th><th>類</th><th class="desc">品目概要</th><th>対応</th></tr></thead><tbody id="fbody"></tbody></table></div>
 <div class="more2" id="more2"></div>
 </div>
 
@@ -722,7 +725,7 @@ function hs6(code){const d=(code||'').replace(/\D/g,'').slice(0,6);return d.leng
   $('#catf').insertAdjacentHTML('beforeend',opts);})();
 const FSTEP=200;         // 既定の表示件数。「もっと見る」で全件へ
 let show2=FSTEP;
-function fRow(r){return `<tr><td class="c">${esc(r.hts)}</td><td class="c">${hs6(r.hts)}</td><td>${esc(r.ku)}</td><td>${esc(r.ja||r.desc)}</td><td><span class="tag ${r.kid?'warn':'exempt'}"${r.kid?` title="児童製品（根拠: ${esc(r.kwhy)}）— Cpassの免除5状態(Antique/Age&gt;13/Vintage/Used/Adult Apparel)のいずれにも該当しないため免除を選べない"`:''}>${esc(r.act)}</span>${r.ambig?'<span class="tag amb" title="この10桁は大人用と子供用が同居します。実物が子供向け（男児/女児）なら児童製品→CPC必須。大人向けなら証明書(GCC)か免除申告">※子供用はCPC</span>':''}</td></tr>`;}
+function fRow(r){return `<tr><td class="c">${esc(r.hts)}</td><td class="c">${hs6(r.hts)}</td><td>${esc(r.ku)}</td><td class="desc">${esc(r.ja||r.desc)}</td><td><span class="tag ${r.kid?'warn':'exempt'}"${r.kid?` title="児童製品（根拠: ${esc(r.kwhy)}）— Cpassの免除5状態(Antique/Age&gt;13/Vintage/Used/Adult Apparel)のいずれにも該当しないため免除を選べない"`:''}>${esc(r.act)}</span>${r.ambig?'<span class="tag amb" title="この10桁は大人用と子供用が同居します。実物が子供向け（男児/女児）なら児童製品→CPC必須。大人向けなら証明書(GCC)か免除申告">※子供用はCPC</span>':''}</td></tr>`;}
 function renderFull(){
   const q=$('#q2').value.trim().toLowerCase();const terms=q.split(/\s+/).filter(Boolean);
   const cat=$('#catf').value;
