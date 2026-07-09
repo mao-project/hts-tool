@@ -176,6 +176,30 @@ border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-right:6px;
 .empty{text-align:center;color:var(--muted);padding:30px;font-size:13px}
 .section{margin-top:26px;border-top:1px solid var(--line);padding-top:16px}
 .section h2{font-size:14px;margin:0 0 4px}.section p{font-size:12px;color:var(--muted);margin:0 0 10px}
+/* 詳細HTS検索: 対応列の見方(折りたたみ) */
+.htshelp{margin:0 0 10px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.htshelp>summary{list-style:none;cursor:pointer;padding:9px 12px;font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:8px;user-select:none}
+.htshelp>summary::-webkit-details-marker{display:none}
+.htshelp>summary::before{content:'▸';color:var(--muted);font-size:11px;flex:none}
+.htshelp[open]>summary::before{content:'▾'}
+.htshelp>summary:hover{color:var(--ink)}
+.htshelp>summary .g{font-size:11px}
+.htshelp>summary:focus-visible{outline:2px solid var(--exempt);outline-offset:-2px;border-radius:9px}
+.htshelp-body{padding:2px 12px 10px;border-top:1px solid var(--line)}
+.htshelp-body p{font-size:12px;color:var(--ink2);margin:8px 0 0;line-height:1.55}
+.htshelp-body .tag{margin-right:2px}
+/* 検索欄＋カテゴリ絞り込み */
+.q2row{display:flex;gap:8px;flex-wrap:wrap}
+#q2{flex:1 1 220px;min-width:0;font-size:15px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;outline:none;background:#fff;font-family:inherit}
+#q2:focus{border-color:var(--exempt);box-shadow:0 0 0 3px rgba(47,111,176,.12)}
+#catf{flex:0 0 auto;font-size:13px;padding:0 30px 0 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink2);font-family:inherit;cursor:pointer;
+appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M0 0l5 6 5-6z' fill='%236b7885'/></svg>");background-repeat:no-repeat;background-position:right 11px center}
+#catf:focus{border-color:var(--exempt);outline:none}
+/* 全件表示トグル */
+.more2{margin-top:8px}
+.morebtn{width:100%;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--exempt);background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px;cursor:pointer}
+.morebtn:hover{border-color:var(--exempt);background:var(--exemptBg)}
+.morebtn:focus-visible{outline:2px solid var(--exempt);outline-offset:1px}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
 td.c{font-family:ui-monospace,monospace;font-weight:700;white-space:nowrap}
@@ -259,14 +283,22 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 
 <div class="section">
 <h2>詳細HTS検索（CPSC公式eFiling対象 590コード・全23カテゴリ）</h2>
-<p>10桁コード・6桁HS・品目名・カテゴリで、CPSC公式eFiling HTSリスト（<b>April 2026版</b>）を直接検索。衣類403／子供用椅子37／カーペット28／玩具13／<b>模造ジュエリー11</b>／マットレス13ほか。<br>※<b>実際に申告するコードは上の「商品名検索」が推奨を出します</b>。ここは公式リストの参照用。<b>掲載コードはCBPがフラグ＝証明書か免除申告が必須</b>。10桁の細分は<b>対象年齢・素材・性別</b>などで分かれます。<br>
-▶ <b>対応列の見方</b>：<span class="tag exempt">証明書 or 免除申告</span>＝どちらかを出せばよい（<b>中古</b>の成人向け品は <code>Adult Product ＞ Used</code> で免除、証明書不要。<b>新品</b>は免除ルートに当てはまらなければ証明書。<b>この証明書は非児童製品なので <code>GCC</code>（一般適合証明書）</b>）。<span class="tag warn">CPC必須</span>＝<b>それ自体が児童製品</b>のもの＝<b>男児/女児アパレル・乳児用の靴・おしゃぶり・ベビーゲート・子供用椅子・乳児用睡眠製品・ベビーカー・年齢表示付き玩具</b>など。Cpassの免除は <code>Antique / Age&gt;13 / Vintage / Used / Adult Apparel</code> の5状態しかなく、<b>児童製品はどれにも該当しない（"Adult"でも"14歳以上"でもない）＝免除を選べない</b>ので、<b>CPC（第三者機関の試験に基づく子供向け製品証明書）</b>が必要です（<b>中古でも同じ</b>）。判定は<b>10桁ごとにUSITCの階層記述</b>で行い、赤タグにカーソルを合わせると根拠が出ます。<br>
-※<code>6107/6207/6208</code>の寝間着類のように、見出しが <i>Men's or boys'</i> ＝<b>大人と子供が同じ10桁に同居</b>するコードには <span class="tag amb">※子供用はCPC</span> を付けています。実物が<b>子供向け（男児/女児）なら児童製品＝CPC必須</b>、大人向けなら証明書(GCC)か免除申告です。</p>
-<input id="q2" placeholder="例: 7117 / 模造ジュエリー / 6204 / 9503 …" autocomplete="off"
- style="width:100%;font-size:15px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;outline:none;background:#fff;font-family:inherit">
+<p>10桁コード・6桁HS・品目名・カテゴリで、CPSC公式eFiling HTSリスト（<b>April 2026版</b>）を直接検索。<br>※<b>実際に申告するコードは上の「商品名検索」が推奨を出します</b>。ここは公式リストの参照用。<b>掲載コードはCBPがフラグ＝証明書か免除申告が必須</b>。</p>
+<details class="htshelp"><summary tabindex="0">対応列の見方 <span class="g">🟦証明書 or 免除申告 ／ 🟥CPC必須 ／ ※子供用はCPC</span></summary>
+<div class="htshelp-body">
+<p>10桁の細分は<b>対象年齢・素材・性別</b>などで分かれます。判定は<b>10桁ごとにUSITCの階層記述</b>で行い、赤タグにカーソルを合わせると根拠が出ます。</p>
+<p><span class="tag exempt">証明書 or 免除申告</span>＝どちらかを出せばよい（<b>中古</b>の成人向け品は <code>Adult Product ＞ Used</code> で免除、証明書不要。<b>新品</b>は免除ルートに当てはまらなければ証明書。<b>この証明書は非児童製品なので <code>GCC</code>（一般適合証明書）</b>）。</p>
+<p><span class="tag warn">CPC必須</span>＝<b>それ自体が児童製品</b>のもの＝<b>男児/女児アパレル・乳児用の靴・おしゃぶり・ベビーゲート・子供用椅子・乳児用睡眠製品・ベビーカー・年齢表示付き玩具</b>など。Cpassの免除5状態（<code>Antique / Age&gt;13 / Vintage / Used / Adult Apparel</code>）の<b>どれにも該当しない＝免除を選べない</b>ので <b>CPC（第三者機関の試験に基づく子供向け製品証明書）</b>が必要（<b>中古でも同じ</b>）。</p>
+<p><span class="tag amb">※子供用はCPC</span>＝<code>6107/6207/6208</code>の寝間着類のように、見出しが <i>Men's or boys'</i> ＝<b>大人と子供が同じ10桁に同居</b>するコード。実物が<b>子供向け（男児/女児）なら児童製品＝CPC必須</b>、大人向けなら証明書(GCC)か免除申告です。</p>
+</div></details>
+<div class="q2row">
+<input id="q2" placeholder="例: 7117 / 模造ジュエリー / 6204 / 9503 …" autocomplete="off">
+<select id="catf" aria-label="カテゴリで絞り込み"><option value="">全カテゴリ（590）</option></select>
+</div>
 <div class="count" id="count2"></div>
 <div style="overflow-x:auto"><table><thead>
 <tr><th>米国HTS(10桁)</th><th>HS(6桁)</th><th>類</th><th>品目概要</th><th>対応</th></tr></thead><tbody id="fbody"></tbody></table></div>
+<div class="more2" id="more2"></div>
 </div>
 
 <div class="foot">
@@ -683,14 +715,33 @@ $('#q').addEventListener('keydown',e=>{
     closeSugg();toTop();$('#q').blur();}
 });
 function hs6(code){const d=(code||'').replace(/\D/g,'').slice(0,6);return d.length>=6?d.slice(0,4)+'.'+d.slice(4,6):esc(code);}
+// カテゴリ絞り込みselectを件数つきで生成(件数の多い順)
+(function(){const cnt={};DATA.full.forEach(r=>cnt[r.cat]=(cnt[r.cat]||0)+1);
+  const opts=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])
+    .map(c=>`<option value="${esc(c)}">${esc(c)}（${cnt[c]}）</option>`).join('');
+  $('#catf').insertAdjacentHTML('beforeend',opts);})();
+const FSTEP=200;         // 既定の表示件数。「もっと見る」で全件へ
+let show2=FSTEP;
+function fRow(r){return `<tr><td class="c">${esc(r.hts)}</td><td class="c">${hs6(r.hts)}</td><td>${esc(r.ku)}</td><td>${esc(r.ja||r.desc)}</td><td><span class="tag ${r.kid?'warn':'exempt'}"${r.kid?` title="児童製品（根拠: ${esc(r.kwhy)}）— Cpassの免除5状態(Antique/Age&gt;13/Vintage/Used/Adult Apparel)のいずれにも該当しないため免除を選べない"`:''}>${esc(r.act)}</span>${r.ambig?'<span class="tag amb" title="この10桁は大人用と子供用が同居します。実物が子供向け（男児/女児）なら児童製品→CPC必須。大人向けなら証明書(GCC)か免除申告">※子供用はCPC</span>':''}</td></tr>`;}
 function renderFull(){
   const q=$('#q2').value.trim().toLowerCase();const terms=q.split(/\s+/).filter(Boolean);
+  const cat=$('#catf').value;
   let list=DATA.full;
+  if(cat)list=list.filter(r=>r.cat===cat);
   if(terms.length)list=list.filter(r=>{const hay=(r.hts+' '+hs6(r.hts)+' '+r.desc+' '+(r.ja||'')+' '+(r.en||'')+' '+r.ku+' '+r.cat).toLowerCase();return terms.every(t=>hay.includes(t));});
-  $('#count2').textContent=list.length+' 件'+(list.length>200?'（先頭200件表示）':'');
-  $('#fbody').innerHTML=list.slice(0,200).map(r=>`<tr><td class="c">${esc(r.hts)}</td><td class="c">${hs6(r.hts)}</td><td>${esc(r.ku)}</td><td>${esc(r.ja||r.desc)}</td><td><span class="tag ${r.kid?'warn':'exempt'}"${r.kid?` title="児童製品（根拠: ${esc(r.kwhy)}）— Cpassの免除5状態(Antique/Age&gt;13/Vintage/Used/Adult Apparel)のいずれにも該当しないため免除を選べない"`:''}>${esc(r.act)}</span>${r.ambig?'<span class="tag amb" title="この10桁は大人用と子供用が同居します。実物が子供向け（男児/女児）なら児童製品→CPC必須。大人向けなら証明書(GCC)か免除申告">※子供用はCPC</span>':''}</td></tr>`).join('');
+  const total=list.length, shown=Math.min(show2,total);
+  $('#count2').textContent=total+' 件'+(total>shown?`（${shown}件表示）`:(total>FSTEP?`（全${total}件表示）`:''));
+  $('#fbody').innerHTML=list.slice(0,show2).map(fRow).join('');
+  const more=$('#more2');
+  if(total>show2) more.innerHTML=`<button type="button" class="morebtn" id="moreBtn">↓ 残り ${total-shown} 件を表示（全${total}件）</button>`;
+  else if(show2>FSTEP&&total>FSTEP) more.innerHTML=`<button type="button" class="morebtn" id="moreBtn" data-collapse="1">↑ 先頭${FSTEP}件に戻す</button>`;
+  else more.innerHTML='';
 }
-$('#q2').addEventListener('input',renderFull);
+$('#q2').addEventListener('input',()=>{show2=FSTEP;renderFull();});
+$('#catf').addEventListener('change',()=>{show2=FSTEP;renderFull();});
+$('#more2').addEventListener('click',e=>{const b=e.target.closest('#moreBtn');if(!b)return;
+  if(b.dataset.collapse){show2=FSTEP;renderFull();$('#q2').scrollIntoView({block:'start'});}
+  else{show2=Infinity;renderFull();}});
 render();renderFull();
 </script>
 </body></html>
