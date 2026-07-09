@@ -37,8 +37,8 @@ h1{font-size:19px;margin:0 0 2px;letter-spacing:.02em;text-wrap:balance}
 .rules>summary:focus-visible{outline:2px solid var(--exempt);outline-offset:-2px}
 .rules b{color:var(--ink)} .rules ol{margin:0;padding:10px 14px 12px 32px} .rules li{margin:4px 0}
 .rlegend{list-style:none;margin:6px 0 0;padding:0}
-.rlegend li{display:flex;align-items:baseline;gap:8px;margin:5px 0;line-height:1.4}
-.rlegend .badge{flex:none}
+.rlegend li{margin:6px 0;line-height:1.5}
+.rlegend .badge{display:inline-block;vertical-align:baseline;margin-right:7px}
 .badge.chk{background:var(--warnBg);color:var(--warn)}
 .searchbox{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0}
 .qwrap{position:relative}
@@ -201,9 +201,9 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <li><b>判定バッジ</b>（フィルタと同じ表記）
   <ul class="rlegend">
   <li><span class="badge safe">対象外</span>CPSC公式eFiling HTSリストに<b>載っていない</b>（CBPフラグなし）</li>
-  <li><span class="badge exempt">免除申告(CPSC対象)</span>リスト<b>掲載</b>→CBPがフラグ＝<b>証明書か免除申告が必須</b>（無いと貨物留置）</li>
+  <li><span class="badge exempt">免除申告(CPSC対象)</span>リスト<b>掲載</b>→CBPがフラグ＝<b>証明書か免除申告が必須</b>（無いと貨物留置）。<br><b>中古</b>なら <code>Adult Product ＞ Used</code>（玩具は <code>Age&gt;13</code>）で<b>免除申告</b>できる＝証明書不要。<b>新品</b>は免除ルート（14歳以上向け玩具／成人アパレルの指定素材／アンティーク・ビンテージ）に当てはまれば免除、当てはまらなければ <b>GCC（一般適合証明書）</b>を提出。<span class="g">※証明書の種別は新品/中古でなく<b>児童製品か否か</b>で決まる：児童製品＝<code>CPC</code>／非児童製品＝<code>GCC</code></span></li>
   <li><span class="badge vol">自主申告(リスト外)</span>リスト外だが着用アパレル(16 CFR 1610)等の規制品目→任意（自主申告はリスクスコア上有利）</li>
-  <li><span class="badge warn">取扱不可</span>ワシントン条約等で当店では扱わない</li>
+  <li><span class="badge warn">取扱不可</span>ワシントン条約等で<b>取り扱い対象外</b>の品目</li>
   <li><span class="badge chk">コード要確認</span>10桁の統計細分に疑義。申告前にHTS確認</li>
   </ul></li>
 <li><b>✈️は航空便注意</b>：香水等は引火性。<b>🔋電池内蔵品はエコノミー配送不可</b>（日本の倉庫スキャンで電池が検知されると返送）＝<b>クーリエで申告して発送</b>が正しい（電池を抜ける品は抜けばエコノミー可）</li>
@@ -236,20 +236,20 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <p>🟦対象品でも、下記に該当すれば<b>証明書は不要</b>。ただし<b>Cpassで「免除」を自主申告する必要</b>があります。<b>免除タイプを誤ると通関遅延</b>の原因になります（Cpass公式FAQ）。<br>
 Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私のSKUは免除されています」</b>を選択（他は「参照PGAメッセージセット」「PGAメッセージセット全文」）→ 下表の<b>カテゴリ</b>と<b>状態</b>を選んで提出。<br>
 施行 <b>2026-07-08</b>／Cpassオンライン免除申告は <b>7/15</b> 稼働（それ以前はオフライン対応）。対象は<b>米国本土＋米国領</b>(MP/MH/GU/FM/PW/AS/PR/VI)宛のみ。</p>
-<details class="optsdd"><summary tabindex="0">免除の選択肢 <b>カテゴリ2 × 状態5</b> ・ 当店の該当品目つき</summary>
+<details class="optsdd"><summary tabindex="0">免除の選択肢 <b>カテゴリ2 × 状態5</b> ・ 該当しやすい品目つき</summary>
 <div class="opts"><div class="optshdr">Cpass「このSKUが属する状態を選択してください」の実画面どおりの構造。<br>
 ⚠️<b><code>Adult Product</code> はアパレル専用ではありません</b>。<code>Used</code>＝<b>中古の成人向け製品（アパレルに限らない）</b>、<code>Adult Apparel with:</code>＝アパレル特有の素材条件、という<b>独立した2つの状態</b>です（Cpassマニュアル本文でも別項目として並記）。<br>
 📌<b>3条件はOR</b>（公式：「次の<b>いずれかの条件</b>に該当する場合、CPSC証明書の提出は不要」）。<code>Used</code>と<code>Adult Apparel with:</code>は<b>直交する条件</b>です：<br>
 　・<code>Used</code>＝<b>中古であること</b>が条件（<b>素材は不問</b>・中古のみ）<br>
 　・<code>Adult Apparel with:</code>＝<b>素材条件を満たすこと</b>が条件（<b>中古/新品を問わない</b>）<br>
 　→ <b>中古の成人向けアパレル</b>はどちらでも可。<b>新品の成人向けアパレル</b>は素材条件に適合すれば免除。<b>新品×素材条件を満たさない</b>場合は免除不可で<b>GCC（可燃性試験に基づく一般適合証明書）が必要</b>。<br>
-※この免除フォームは<b>🟦CPSC対象品にのみ</b>表示されます（当店では玩具3品目＋模造ジュエリー13品目）。<b>当店は全品中古</b>なので、アパレルは素材を問わず <code>Used</code> で完結します。</div>
-<table class="optstbl lft"><thead><tr><th>カテゴリ</th><th>状態</th><th>当店で該当する品目</th></tr></thead><tbody>
+※この免除フォームは<b>🟦CPSC対象品にのみ</b>表示されます（このマスターでは玩具3品目＋模造ジュエリー13品目）。<b>中古品</b>なら、アパレルは素材を問わず <code>Used</code> で完結します。</div>
+<table class="optstbl lft"><thead><tr><th>カテゴリ</th><th>状態</th><th>該当しやすい品目</th></tr></thead><tbody>
 <tr><td rowspan="3">Toy<br><span class="g">玩具</span></td><td>Antique</td><td class="g">—（アンティーク品）</td></tr>
 <tr><td><b>Age&gt;13</b><br><span class="g">＝14歳以上向け</span></td><td><b>ぬいぐるみ／ぬいぐるみマスコット／お守り の3品目</b>（CPSCがこの3件をToys区分に収録）。申告名称が <code>for ages 14 and up</code> なのでこれ<br><span class="g">※お守りは実態が祭礼用品なので <code>Adult Product ＞ Used</code> でも成立</span></td></tr>
 <tr><td>Vintage</td><td class="g">—（ビンテージ品）</td></tr>
-<tr><td rowspan="2">Adult Product<br><span class="g">成人向け製品</span></td><td><b>Used</b><br><span class="g">＝中古</span></td><td><b>模造ジュエリー13品目</b>（指輪／ネックレス／イヤリング／ピアス／ブレスレット／チョーカー／ヘアピン／ヘアクリップ／リストバンド／プラスチックキーチェーン）。<b>アパレルに限らず「中古の成人向け製品」全般</b>が対象。当店は全品中古なのでこれが基本</td></tr>
-<tr><td>Adult Apparel with:<br><span class="g">＝成人向けアパレル（素材条件）</span></td><td><b>成人向けアパレル14品目</b>（Tシャツ／ポロ／シャツ／ジャケット／スカーフ等）を<b>素材条件</b>で出す場合。①アクリル・モダクリル・ナイロン・ポリアミド・オレフィン・ポリプロピレン・ウール・カシミヤ・ポリエステルの<b>いずれかを含む</b>／②または<b>生地重量2.6 oz/yd²以上</b>かつ：アセテート／竹(レーヨン系)／キャンバス／カシミヤ混紡／シフォン／コットン100%／コットン混紡／クレープ／ガーゼ／ジョーゼット／ニット／レース／リネン・麻織物／リネン混紡／メッシュ・ネット／モダール／モダール混紡／ナイロン・スパンデックス混紡／オーガンジー／オックスフォード／ポリエステル・レーヨン混紡／ポリエステル・スパンデックス混紡／レーヨン・ビスコース100%／サテン／シルク／スパンデックス・エラスタン／タフタ／ツイル／ボイル／ウール混紡<br><span class="g">※全品中古なので <code>Used</code> でも成立</span></td></tr>
+<tr><td rowspan="2">Adult Product<br><span class="g">成人向け製品</span></td><td><b>Used</b><br><span class="g">＝中古</span></td><td><b>模造ジュエリー13品目</b>（指輪／ネックレス／イヤリング／ピアス／ブレスレット／チョーカー／ヘアピン／ヘアクリップ／リストバンド／プラスチックキーチェーン）。<b>アパレルに限らず「中古の成人向け製品」全般</b>が対象。<b>中古品ならこれが基本</b></td></tr>
+<tr><td>Adult Apparel with:<br><span class="g">＝成人向けアパレル（素材条件）</span></td><td><b>成人向けアパレル14品目</b>（Tシャツ／ポロ／シャツ／ジャケット／スカーフ等）を<b>素材条件</b>で出す場合。①アクリル・モダクリル・ナイロン・ポリアミド・オレフィン・ポリプロピレン・ウール・カシミヤ・ポリエステルの<b>いずれかを含む</b>／②または<b>生地重量2.6 oz/yd²以上</b>かつ：アセテート／竹(レーヨン系)／キャンバス／カシミヤ混紡／シフォン／コットン100%／コットン混紡／クレープ／ガーゼ／ジョーゼット／ニット／レース／リネン・麻織物／リネン混紡／メッシュ・ネット／モダール／モダール混紡／ナイロン・スパンデックス混紡／オーガンジー／オックスフォード／ポリエステル・レーヨン混紡／ポリエステル・スパンデックス混紡／レーヨン・ビスコース100%／サテン／シルク／スパンデックス・エラスタン／タフタ／ツイル／ボイル／ウール混紡<br><span class="g">※中古品なら <code>Used</code> でも成立</span></td></tr>
 </tbody></table>
 <div class="optshdr" style="margin-top:8px">▶ <b>証明書を出す場合</b>：「PGAメッセージセット全文」=製造者情報＋第三者試験機関の試験情報が必要／「参照PGAメッセージセット」=基本情報と証明書番号のみ。証明書種別は CPC(子供向け製品証明書) か GCC(一般適合証明書)。<br>
 ▶ <b>注意</b>：SKUプリセットの変更は<b>変更後の新規注文にのみ</b>反映。ラベル生成後は編集不可（未設定なら追加のみ可）。</div>
@@ -259,7 +259,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <div class="section">
 <h2>詳細HTS検索（CPSC公式eFiling対象 590コード・全23カテゴリ）</h2>
 <p>10桁コード・6桁HS・品目名・カテゴリで、CPSC公式eFiling HTSリスト（<b>April 2026版</b>）を直接検索。衣類403／子供用椅子37／カーペット28／玩具13／<b>模造ジュエリー11</b>／マットレス13ほか。<br>※<b>実際に申告するコードは上の「商品名検索」が推奨を出します</b>。ここは公式リストの参照用。<b>掲載コードはCBPがフラグ＝証明書か免除申告が必須</b>。10桁の細分は<b>対象年齢・素材・性別</b>などで分かれます。<br>
-▶ <b>対応列の見方</b>：<span class="tag exempt">証明書 or 免除申告</span>＝どちらかを出せばよい（当店のような中古の成人向け品は <code>Adult Product ＞ Used</code> で免除）。<span class="tag warn">CPC必須</span>＝<b>それ自体が児童製品</b>のもの＝<b>男児/女児アパレル・乳児用の靴・おしゃぶり・ベビーゲート・子供用椅子・乳児用睡眠製品・ベビーカー・年齢表示付き玩具</b>など。Cpassの免除は <code>Antique / Age&gt;13 / Vintage / Used / Adult Apparel</code> の5状態しかなく、<b>児童製品はどれにも該当しない（"Adult"でも"14歳以上"でもない）＝免除を選べない</b>ので、<b>CPC（第三者機関の試験に基づく子供向け製品証明書）</b>が必要です（<b>中古でも同じ</b>）。判定は<b>10桁ごとにUSITCの階層記述</b>で行い、赤タグにカーソルを合わせると根拠が出ます。<br>
+▶ <b>対応列の見方</b>：<span class="tag exempt">証明書 or 免除申告</span>＝どちらかを出せばよい（<b>中古</b>の成人向け品は <code>Adult Product ＞ Used</code> で免除、証明書不要。<b>新品</b>は免除ルートに当てはまらなければ <code>GCC</code>）。<span class="tag warn">CPC必須</span>＝<b>それ自体が児童製品</b>のもの＝<b>男児/女児アパレル・乳児用の靴・おしゃぶり・ベビーゲート・子供用椅子・乳児用睡眠製品・ベビーカー・年齢表示付き玩具</b>など。Cpassの免除は <code>Antique / Age&gt;13 / Vintage / Used / Adult Apparel</code> の5状態しかなく、<b>児童製品はどれにも該当しない（"Adult"でも"14歳以上"でもない）＝免除を選べない</b>ので、<b>CPC（第三者機関の試験に基づく子供向け製品証明書）</b>が必要です（<b>中古でも同じ</b>）。判定は<b>10桁ごとにUSITCの階層記述</b>で行い、赤タグにカーソルを合わせると根拠が出ます。<br>
 ※<code>6107/6207/6208</code>の寝間着類のように、見出しが <i>Men's or boys'</i> ＝<b>大人と子供が同じ10桁に同居</b>するコードは「証明書 or 免除申告」。実物が子供用なら免除は使えません。</p>
 <input id="q2" placeholder="例: 7117 / 模造ジュエリー / 6204 / 9503 …" autocomplete="off"
  style="width:100%;font-size:15px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;outline:none;background:#fff;font-family:inherit">
@@ -570,8 +570,8 @@ function render(){
     // (誤選択は通関遅延の原因・Cpass公式FAQ Q7。実画面はカテゴリ2×状態5の階層)
     const etype = it.cpsccat==='Toys'
         ? '<code>Toy</code> ＞ <code>Age&gt;13</code>（申告名称が for ages 14 and up のため）'
-      : it.cpsccat==='Imitation Jewelry' ? '<code>Adult Product</code> ＞ <code>Used</code>（全品中古のため）'
-      : it.v==='vol' ? '<code>Adult Product</code> ＞ <code>Used</code>（全品中古のため。素材条件で出すなら <code>Adult Apparel with:</code>）' : '';
+      : it.cpsccat==='Imitation Jewelry' ? '<code>Adult Product</code> ＞ <code>Used</code>（中古の場合）'
+      : it.v==='vol' ? '<code>Adult Product</code> ＞ <code>Used</code>（中古の場合。素材条件で出すなら <code>Adult Apparel with:</code>）' : '';
     const eline = etype?`<br>▶ <b>Cpassの免除選択</b>：${etype}`:'';
     const cpsc = it.v==='exempt'
       ? `<div class="cpscbox must">🟦 <b>CPSC eFiling 対象</b>（公式HTSリスト掲載${it.cpsccat?'：'+esc(it.cpsccat):''}）— CBPがフラグします。<b>証明書または免除申告が必須</b>（未提出は貨物留置）${eline}</div>`
