@@ -176,13 +176,16 @@ background:#f0f3f7;padding:5px 10px;border-radius:7px;cursor:pointer;border:1px 
 .airchip{margin-top:8px;font-size:11.5px;color:#8a4b00;background:#fff1de;border:1px solid #f0d9b5;border-radius:7px;padding:6px 9px;font-weight:600}
 .badge.air{background:#fff1de;color:#8a4b00;border:1px solid #f0d9b5}
 .altbox,.note{margin-top:7px;font-size:11.5px;color:var(--ink2);background:#fafbfc;border:1px dashed var(--line);border-radius:7px;padding:6px 9px}
-.opts{margin-top:8px;background:#f7f9fb;border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.opts{margin-top:8px;background:#f7f9fb;border:1px solid var(--line);border-radius:8px;padding:9px 11px;overflow-x:auto}
 .optshdr{font-size:11.5px;color:var(--ink2);margin-bottom:6px}
 .optstbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .optstbl th{color:var(--muted);font-weight:600;font-size:10.5px;text-align:left;padding:3px 6px;border-bottom:1px solid var(--line);white-space:nowrap}
 .optstbl th:last-child,.optstbl td:last-child{text-align:right}
 .optstbl.lft th,.optstbl.lft td{text-align:left!important;vertical-align:top}
 .optstbl.lft td:first-child{white-space:nowrap;font-weight:600}
+/* 早見表(matx)は1列目が長い素材リストなので折り返す(nowrapだと右へはみ出す) */
+.optstbl.lft.matx td:first-child{white-space:normal;min-width:180px}
+.optstbl.lft.matx td:nth-child(2){white-space:nowrap}
 code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#eef2f7;border:1px solid var(--line);
 border-radius:4px;padding:0 4px;font-size:.92em;white-space:nowrap}
 .cpscbox code{background:rgba(255,255,255,.7)}
@@ -191,7 +194,8 @@ border-radius:4px;padding:0 4px;font-size:.92em;white-space:nowrap}
 .optstbl td:first-child{color:var(--ink2);padding-right:10px;line-height:1.35}
 .optstbl .code{font-size:14px}
 .optstbl .txt{font-family:ui-monospace,monospace;color:var(--muted)}
-.optstbl .orate{font-weight:700;font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* 税率は原則1行だが、時計の複合税率($1.53 each + 4.2% on the case…)は長いので240pxで折り返す */
+.optstbl .orate{font-weight:700;font-size:12px;white-space:normal;display:inline-block;max-width:240px;text-align:right;font-variant-numeric:tabular-nums}
 .optstbl .orate.free{color:var(--safe)} .optstbl .orate.na{color:var(--muted);font-weight:400}
 .optstbl .cat{display:inline-block;font-size:10px;font-weight:600;color:var(--ink2);background:#eef2f7;border:1px solid var(--line);border-radius:5px;padding:1px 6px;margin-bottom:3px;white-space:nowrap}
 .optstbl .cat.same{color:var(--copy);background:var(--copyBg);border-color:#bfe6d3}
@@ -385,7 +389,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <details class="optsdd"><summary tabindex="0">🧵 アパレル素材免除 <b>早見表</b> ・ Cpassで選ぶルートとFabric Type</summary>
 <div class="opts"><div class="optshdr">実物の素材が分かったら、この表で<b>選ぶ免除ルート</b>を決めます（各アパレルカードの手順③にも個別表示）。<br>
 根拠＝16 CFR 1610.1(d)。<b>(d)(2)素材ルート</b>＝重量・起毛を問わず6繊維<u>のみ</u>で構成／<b>(d)(1)重量ルート</b>＝繊維を問わず<b>表面が平滑（起毛なし）×2.6 oz/yd²（≒88 g/m²）以上</b>。</div>
-<table class="optstbl lft"><thead><tr><th>実物の素材</th><th>免除</th><th>Cpassで選ぶもの</th></tr></thead><tbody>
+<table class="optstbl lft matx"><thead><tr><th>実物の素材</th><th>免除</th><th>Cpassで選ぶもの</th></tr></thead><tbody>
 <tr><td><b>ポリエステル100%</b>（フリース含む・起毛OK）／<b>ナイロン100%</b>／<b>アクリル100%</b>／<b>モダクリル100%</b>／<b>オレフィン(ポリプロピレン)100%</b>／<b>ウール・カシミヤ100%</b></td><td><span class="tag exempt">素材ルート</span></td><td>① <code>Material includes acrylic … OR polyester</code></td></tr>
 <tr><td><b>上記6繊維だけの混紡</b>（例：ポリ65%×ウール35%）</td><td><span class="tag exempt">素材ルート</span></td><td>① 同上<br><span class="g">※条文は「6繊維のみ("made entirely from")」。綿・レーヨン等が1%でも入ると①は不可</span></td></tr>
 <tr><td><b>綿100%</b>（Tシャツ・ポロ・シャツ等の普通の厚さ）</td><td><span class="tag exempt">重量ルート</span></td><td>② <code>Fabric weight ≥ 2.6 oz/yard</code> ＋ <code>Cotton (100%)</code><br><span class="g">Tシャツ140〜180 g/m²・キャミ100〜140 g/m²は余裕でクリア</span></td></tr>
