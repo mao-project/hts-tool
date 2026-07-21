@@ -314,6 +314,12 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 .wsf label{font-size:11px;color:var(--muted);font-weight:600}
 .wsf input,.wsf select{font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;font-family:inherit;background:#fff;color:var(--ink)}
 .wsf input:focus,.wsf select:focus{outline:none;border-color:var(--exempt);box-shadow:0 0 0 2px rgba(47,111,176,.12)}
+.wsf .req{color:var(--warn);font-weight:700}
+.wsf .opt{color:var(--muted);font-weight:400;font-size:9.5px;background:#eef1f4;border-radius:4px;padding:0 4px}
+.wsf .fxbadge{color:var(--exempt);font-weight:600;font-size:9.5px;background:var(--exemptBg);border-radius:4px;padding:0 4px}
+.wssub .wsnote{font-weight:400;color:var(--muted);font-size:10.5px}
+.wsf.grayed{opacity:.42}
+.wsf.grayed input,.wsf.grayed select{background:#eef1f4;cursor:not-allowed}
 .wssub{grid-column:1/-1;font-size:11.5px;font-weight:700;color:var(--exempt);margin:10px 0 -2px;padding-top:8px;border-top:1px solid var(--line)}
 .wsval{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
 .wsval .cell{background:var(--exemptBg);border:1px solid #c9dced;border-radius:8px;padding:7px 9px}
@@ -505,46 +511,51 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 
 <div class="section wsec">
 <h2>🕐 腕時計ウォッチシート生成（クーリエ発送用）</h2>
-<div class="wsintro"><b>クーリエ発送（DHL/FedEx）で腕時計を送る時だけ必要</b>です。エコノミーの機械式時計は不要。<b>電池式はエコノミー不可＝クーリエのみ</b>。<br>総額を入力すると <b>Movement／Case／Strap／Battery</b> に<b>比率で按分</b>します（パーツ実額は不要・比率は編集可）。⚠️ <b>ストラップは税率が最も高い</b>ので按分は関税額に影響します。会社名・署名は<b>公開ツールに保存しません</b>（毎回入力）。</div>
+<div class="wsintro"><b>クーリエ発送（DHL/FedEx）で腕時計を送る時だけ必要</b>です。エコノミーの機械式時計は不要。<b>電池式はエコノミー不可＝クーリエのみ</b>。<br>総額を入力すると <b>Movement／Case／Strap／Battery</b> に<b>比率で按分</b>します（パーツ実額は不要・比率は編集可）。⚠️ <b>ストラップは税率が最も高い</b>ので按分は関税額に影響します。<br><span class="req">*</span>＝必須。<span class="fxbadge">FedExのみ</span>＝DHLでは不要（DHL選択時は自動でグレー表示）。<b>素材・原産国・電池は「よくある選択肢」を用意</b>しました。中古で特定が難しい項目は <code>Unknown</code> でも構いません（虚偽でなく、実務上分かる範囲で）。会社名・署名は<b>公開ツールに保存しません</b>。</div>
 <div class="wsgrid">
 <div class="wssub">発送・提出者情報</div>
 <div class="wsf"><label>発送方法</label><select id="ws_carrier"><option value="dhl">DHL（ワークシート2枚提出）</option><option value="fedex">FedEx（検査時に提出）</option></select></div>
-<div class="wsf"><label>日付 Date</label><input id="ws_date" type="date"></div>
-<div class="wsf"><label>AWB番号（運送状番号）</label><input id="ws_awb" placeholder="分かる場合"></div>
-<div class="wsf"><label>会社名 Company</label><input id="ws_company" placeholder="発送元の会社名"></div>
-<div class="wsf"><label>氏名・役職 Name/Title</label><input id="ws_name" placeholder="担当者名"></div>
-<div class="wsf"><label>Email（FedEx）</label><input id="ws_email" placeholder="連絡先メール"></div>
-<div class="wsf"><label>スタイル参照番号（FedEx）</label><input id="ws_ref" placeholder="型番/リファレンス"></div>
+<div class="wsf"><label>日付 Date <span class="req">*</span></label><input id="ws_date" type="date"></div>
+<div class="wsf"><label>会社名 Company <span class="req">*</span></label><input id="ws_company" placeholder="発送元の会社名"></div>
+<div class="wsf"><label>氏名・役職 Name/Title <span class="req">*</span></label><input id="ws_name" placeholder="担当者名"></div>
+<div class="wsf"><label>AWB番号 <span class="opt">任意</span></label><input id="ws_awb" placeholder="分かる場合"></div>
+<div class="wsf fx-only"><label>Email <span class="fxbadge">FedExのみ</span></label><input id="ws_email" placeholder="連絡先メール"></div>
+<div class="wsf fx-only"><label>スタイル参照番号 <span class="fxbadge">FedExのみ</span></label><input id="ws_ref" placeholder="型番/リファレンス"></div>
 
 <div class="wssub">時計の仕様</div>
-<div class="wsf"><label>HTSコード</label><input id="ws_hts" placeholder="例 9102.11.25.00"></div>
-<div class="wsf"><label>数量 Quantity</label><input id="ws_qty" type="number" min="1" value="1"></div>
-<div class="wsf"><label>時計スタイル</label><select id="ws_style"><option value="Wrist">腕時計 Wrist</option><option value="Pocket">懐中時計 Pocket</option><option value="Other">その他 Other</option></select></div>
-<div class="wsf"><label>主機能 Function</label><select id="ws_func"><option value="timekeeping">計時 timekeeping</option><option value="GPS">GPS</option><option value="heart monitor">心拍 heart monitor</option><option value="pedometer">歩数計 pedometer</option><option value="other">その他 other</option></select></div>
-<div class="wsf"><label>駆動方式 Power</label><select id="ws_power"><option value="mech">機械式 Analog Mechanical only</option><option value="auto">自動巻 Automatic (Self-Winding)</option><option value="manual">手巻 Manual</option><option value="batt">電池式 Electric (Battery)</option><option value="digital">デジタル Digital (Optoelectronic)</option></select></div>
-<div class="wsf"><label>表示 Display</label><select id="ws_disp"><option value="Analog (Mechanical)">アナログ Analog</option><option value="Digital (Optoelectronic)">デジタル Digital</option><option value="Analog/Digital">アナログ＋デジタル</option></select></div>
-<div class="wsf"><label>宝石数 Jewels</label><select id="ws_jewels"><option value="0-1 Jewels">0〜1石</option><option value="2 to 7 Jewels">2〜7石</option><option value="8 to 17 Jewels">8〜17石</option><option value="over 17 Jewels">17石超</option></select></div>
-<div class="wsf"><label>ムーブメントが12mm厚×50mm超か（FedEx）</label><select id="ws_size"><option value="No">いいえ No</option><option value="Yes">はい Yes</option></select></div>
-<div class="wsf"><label>ムーブメント原産国</label><input id="ws_mov_origin" placeholder="例 Japan"></div>
+<div class="wsf"><label>駆動方式 Power <span class="req">*</span></label><select id="ws_power"><option value="mech">機械式 Analog Mechanical only</option><option value="auto">自動巻 Automatic (Self-Winding)</option><option value="manual">手巻 Manual</option><option value="batt">電池式 Electric (Battery)</option><option value="digital">デジタル Digital (Optoelectronic)</option></select></div>
+<div class="wsf"><label>宝石数 Jewels <span class="req">*</span></label><select id="ws_jewels"><option value="0-1 Jewels">0〜1石（クォーツの標準）</option><option value="2 to 7 Jewels">2〜7石</option><option value="8 to 17 Jewels">8〜17石</option><option value="over 17 Jewels">17石超</option></select></div>
+<div class="wsf fx-only"><label>HTSコード <span class="fxbadge">FedExのみ</span></label><input id="ws_hts" placeholder="例 9102.11.25.00"></div>
+<div class="wsf fx-only"><label>数量 Quantity <span class="fxbadge">FedExのみ</span></label><input id="ws_qty" type="number" min="1" value="1"></div>
+<div class="wsf fx-only"><label>時計スタイル <span class="fxbadge">FedExのみ</span></label><select id="ws_style"><option value="Wrist">腕時計 Wrist</option><option value="Pocket">懐中時計 Pocket</option><option value="Other">その他 Other</option></select></div>
+<div class="wsf fx-only"><label>主機能 Function <span class="fxbadge">FedExのみ</span></label><select id="ws_func"><option value="timekeeping">計時 timekeeping</option><option value="GPS">GPS</option><option value="heart monitor">心拍 heart monitor</option><option value="pedometer">歩数計 pedometer</option><option value="other">その他 other</option></select></div>
+<div class="wsf fx-only"><label>表示 Display <span class="fxbadge">FedExのみ</span></label><select id="ws_disp"><option value="Analog (Mechanical)">アナログ Analog</option><option value="Digital (Optoelectronic)">デジタル Digital</option><option value="Analog/Digital">アナログ＋デジタル</option></select></div>
+<div class="wsf fx-only"><label>ムーブメント12mm厚×50mm超 <span class="fxbadge">FedExのみ</span></label><select id="ws_size"><option value="No">いいえ No</option><option value="Yes">はい Yes</option></select></div>
+<div class="wsf fx-only"><label>ムーブメント原産国 <span class="fxbadge">FedExのみ</span></label><input id="ws_mov_origin" list="dl_country" placeholder="Japan / China / Unknown"></div>
 
-<div class="wssub">素材・原産国</div>
-<div class="wsf"><label>ケース素材 Case</label><select id="ws_case_mat"><option value="NOT Gold/Silver Plated">卑金属（金銀めっきなし）</option><option value="Gold/Silver Plated">金/銀めっき</option><option value="Wholly of Precious Metal">貴金属無垢</option><option value="Metal Clad w/Precious Metal">貴金属張り</option><option value="Other">その他</option></select></div>
-<div class="wsf"><label>ケース素材（自由記入）</label><input id="ws_case_txt" placeholder="例 Stainless Steel"></div>
-<div class="wsf"><label>ケース原産国</label><input id="ws_case_origin" placeholder="例 Japan"></div>
-<div class="wsf"><label>バックプレート素材</label><input id="ws_backplate" placeholder="例 Stainless Steel"></div>
-<div class="wsf"><label>ストラップ素材 Strap</label><select id="ws_strap_mat"><option value="Metal">金属 Metal</option><option value="Leather">革 Leather</option><option value="Textile">繊維 Textile</option><option value="Other">その他 Other</option><option value="No Band">バンドなし No Band</option></select></div>
-<div class="wsf"><label>ストラップ詳細（金属種/動物種等）</label><input id="ws_strap_txt" placeholder="例 Stainless / Cowhide"></div>
-<div class="wsf"><label>ストラップ原産国</label><input id="ws_strap_origin" placeholder="例 Japan"></div>
-<div class="wsf"><label>電池の種類（電池式のみ）</label><input id="ws_batt_type" placeholder="例 SR626SW"></div>
-<div class="wsf"><label>電池原産国（電池式のみ）</label><input id="ws_batt_origin" placeholder="例 Japan"></div>
+<div class="wssub">素材・原産国 <span class="wsnote">よくある選択肢つき（クリックで候補・自由入力も可）。不明は Unknown。</span></div>
+<div class="wsf"><label>ケース素材 Case <span class="req">*</span></label><input id="ws_case_mat" list="dl_case" value="Stainless Steel"></div>
+<div class="wsf"><label>ストラップ素材 Strap <span class="req">*</span></label><select id="ws_strap_mat"><option value="Metal">金属 Metal</option><option value="Leather">革 Leather</option><option value="Textile">繊維 Textile</option><option value="Other">その他 Other</option><option value="No Band">バンドなし No Band</option></select></div>
+<div class="wsf"><label>ストラップ詳細 <span class="opt">任意</span></label><input id="ws_strap_txt" list="dl_strap" placeholder="Stainless / Cowhide 等"></div>
+<div class="wsf"><label>電池の種類 <span class="opt">電池式のみ</span></label><input id="ws_batt_type" list="dl_batt" placeholder="不明なら Unknown (button cell)"></div>
+<div class="wsf fx-only"><label>バックプレート素材 <span class="fxbadge">FedExのみ</span></label><input id="ws_backplate" list="dl_back" value="Stainless Steel"></div>
+<div class="wsf fx-only"><label>ケース原産国 <span class="fxbadge">FedExのみ</span></label><input id="ws_case_origin" list="dl_country" placeholder="Japan / China / Unknown"></div>
+<div class="wsf fx-only"><label>ストラップ原産国 <span class="fxbadge">FedExのみ</span></label><input id="ws_strap_origin" list="dl_country" placeholder="Japan / China / Unknown"></div>
+<div class="wsf fx-only"><label>電池原産国 <span class="fxbadge">FedExのみ</span></label><input id="ws_batt_origin" list="dl_country" placeholder="Japan / China / Unknown"></div>
 
 <div class="wssub">総額と按分</div>
-<div class="wsf"><label>総額 Total Value</label><input id="ws_total" type="number" min="0" step="0.01" placeholder="販売価格の合計"></div>
+<div class="wsf"><label>総額 Total Value <span class="req">*</span></label><input id="ws_total" type="number" min="0" step="0.01" placeholder="販売価格の合計"></div>
 <div class="wsf"><label>通貨 Currency</label><input id="ws_cur" value="USD"></div>
 <div class="wsf"><label>Movement 比率 %</label><input id="ws_r_mov" type="number" min="0" value="45"></div>
 <div class="wsf"><label>Case 比率 %</label><input id="ws_r_case" type="number" min="0" value="35"></div>
 <div class="wsf"><label>Strap 比率 %</label><input id="ws_r_strap" type="number" min="0" value="20"></div>
 <div class="wsf"><label>Battery 比率 %</label><input id="ws_r_batt" type="number" min="0" value="0"></div>
+</div>
+<datalist id="dl_case"><option>Stainless Steel</option><option>Base Metal Alloy</option><option>Gold-Plated Steel</option><option>Silver-Plated Metal</option><option>Two-tone (Steel and Gold-Plated)</option><option>Titanium</option><option>Plastic / Resin</option><option>Ceramic</option><option>Solid Precious Metal</option><option>Unknown</option></datalist>
+<datalist id="dl_back"><option>Stainless Steel</option><option>Base Metal</option><option>Plastic / Resin</option><option>Same as case</option><option>Unknown</option></datalist>
+<datalist id="dl_batt"><option>SR626SW (377)</option><option>SR621SW (364)</option><option>SR920SW (370/371)</option><option>SR927SW (395)</option><option>CR2016</option><option>CR2025</option><option>CR2032</option><option>LR44 / SR44</option><option>Unknown (button cell)</option></datalist>
+<datalist id="dl_country"><option>Japan</option><option>China</option><option>Switzerland</option><option>Hong Kong</option><option>South Korea</option><option>Taiwan</option><option>Germany</option><option>Unknown</option></datalist>
+<datalist id="dl_strap"><option>Stainless Steel</option><option>Cowhide Leather</option><option>Genuine Leather</option><option>PU Leather</option><option>Silicone / Rubber</option><option>Nylon</option><option>Canvas</option><option>Unknown</option></datalist>
 </div>
 <div class="wsval">
 <div class="cell"><span>Movement</span><b id="ws_v_mov">0</b></div>
@@ -1063,6 +1074,8 @@ render();renderFull();
   const g=id=>document.getElementById(id);
   if(!g('ws_total')) return;
   const DEF={mech:[45,35,20,0], batt:[35,35,25,5]};
+  // シートは米国税関(CBP)提出書類＝必ず英語で出す(プルダウン表示は日本語で選びやすく)
+  const POWER_EN={mech:'Analog (Mechanical) only', auto:'Automatic Winding (Self Winding)', manual:'Manual', batt:'Electric (Battery)', digital:'Digital (Optoelectronic) only'};
   const isBatt=()=>['batt','digital'].includes(g('ws_power').value);
   function num(v){v=parseFloat(v);return isNaN(v)||v<0?0:v;}
   function fmt(v){return (Math.round(v*100)/100).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
@@ -1084,6 +1097,15 @@ render();renderFull();
   ['ws_total','ws_cur','ws_r_mov','ws_r_case','ws_r_strap','ws_r_batt'].forEach(id=>g(id).addEventListener('input',compute));
   g('ws_power').addEventListener('change',applyDefaults);
   g('ws_defbtn').addEventListener('click',applyDefaults);
+  // DHLはFedExより項目が少ない→DHL選択時はFedEx専用欄をグレーアウト＋無効化(入力不要が一目で分かる)
+  function applyCarrier(){
+    const dhl=g('ws_carrier').value==='dhl';
+    document.querySelectorAll('.wsec .fx-only').forEach(el=>{
+      el.classList.toggle('grayed',dhl);
+      const inp=el.querySelector('input,select'); if(inp) inp.disabled=dhl;
+    });
+  }
+  g('ws_carrier').addEventListener('change',applyCarrier);
   const E=s=>esc(s||'');
   function box(on){return on?'[ X ]':'[&nbsp;&nbsp;&nbsp;]';}
   function ln(v){return '<span class="u">'+E(v)+'</span>';}
@@ -1119,7 +1141,7 @@ render();renderFull();
       ['Quantity', g('ws_qty').value],
       ['HTSUS Number (if known)', d.hts],
       ['Primary function', g('ws_func').value],
-      ['How is the watch powered', g('ws_power').options[g('ws_power').selectedIndex].text],
+      ['How is the watch powered', POWER_EN[g('ws_power').value]||''],
       ['Movement / Display type', g('ws_disp').value],
       ['Movement over 12mm thick and 50mm wide?', g('ws_size').value],
       ['Number of Jewels in Movement', g('ws_jewels').value],
@@ -1140,15 +1162,15 @@ render();renderFull();
     return '<div class="wsheet"><h2>FEDEX — WATCH WORKSHEET</h2>'
       +'<div class="row">Company: '+ln(d.company)+' &nbsp; Name/Title: '+ln(d.name)+'</div>'
       +'<div class="row">E-mail: '+ln(d.email)+' &nbsp; AWB Number: '+ln(d.awb)+' &nbsp; Date: '+ln(d.date)+'</div>'
-      +'<table><thead><tr><th style="width:46%">項目</th><th>Watch 1</th></tr></thead><tbody>'
+      +'<table><thead><tr><th style="width:46%">Field</th><th>Watch 1</th></tr></thead><tbody>'
       +rows.map(r=>'<tr><td>'+E(r[0])+'</td><td>'+E(r[1])+'</td></tr>').join('')
       +'</tbody></table>'
-      +'<div class="note">最大8本まで1シートに記入可（実UI）。2本目以降は列を追記してください。</div>'
+      +'<div class="note">Up to 8 watches per sheet. Add a column for each additional watch.</div>'
       +'</div>';
   }
   g('ws_printbtn').addEventListener('click',()=>{
     const st=vals();
-    const caseMat=(g('ws_case_txt').value.trim()||g('ws_case_mat').options[g('ws_case_mat').selectedIndex].text);
+    const caseMat=(g('ws_case_mat').value.trim()||'Stainless Steel');  // datalist入力(英語)
     const strapMat=(g('ws_strap_txt').value.trim()?g('ws_strap_mat').value+' ('+g('ws_strap_txt').value.trim()+')':g('ws_strap_mat').value);
     const d={
       company:g('ws_company').value, date:g('ws_date').value, awb:g('ws_awb').value,
@@ -1167,6 +1189,7 @@ render();renderFull();
     setTimeout(()=>window.print(),80);
   });
   applyDefaults();
+  applyCarrier();  // 初期(既定=DHL)でFedEx専用欄をグレーに
 })();
 </script>
 </body></html>
