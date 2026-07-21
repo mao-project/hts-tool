@@ -1146,10 +1146,13 @@ render();renderFull();
   g('ws_hts').addEventListener('click',()=>{const v=g('ws_hts').value;if(v){if(navigator.clipboard)navigator.clipboard.writeText(v).catch(()=>{});toast('コピー: '+v);}});
   g('ws_hts').style.cursor='pointer';
   ['ws_power','ws_disp','ws_jewels','ws_strap_mat','ws_case_mat'].forEach(id=>g(id).addEventListener('change',computeWatchCode));
-  // 主原産国を選ぶと、未入力の他の原産国にも反映(手間削減・個別上書き可)
+  // 主原産国を選ぶと他の原産国も追従(2回目以降も同期)。手動で変えた欄だけ独立させる
+  const SUBORIG=['ws_case_origin','ws_strap_origin','ws_batt_origin'];
+  const origLinked={ws_case_origin:true, ws_strap_origin:true, ws_batt_origin:true};
+  SUBORIG.forEach(id=>g(id).addEventListener('change',()=>{origLinked[id]=false;}));  // 手動変更→追従解除
   g('ws_mov_origin').addEventListener('change',()=>{
-    const v=g('ws_mov_origin').value; if(!v) return;
-    ['ws_case_origin','ws_strap_origin','ws_batt_origin'].forEach(id=>{ if(!g(id).value) g(id).value=v; });
+    const v=g('ws_mov_origin').value;
+    if(v) SUBORIG.forEach(id=>{ if(origLinked[id]) g(id).value=v; });  // 追従中の欄は毎回同期
     g('ws_mov_origin').closest('.wsf').classList.remove('invalid');
   });
   const E=s=>esc(s||'');
