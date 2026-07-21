@@ -323,6 +323,8 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 .wsf .autobadge{color:var(--safe);font-weight:700;font-size:9.5px;background:var(--safeBg);border-radius:4px;padding:0 5px}
 .wshts input{background:var(--safeBg);border-color:#bcdcc4;font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--ink)}
 .wshint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+#ws_hts_rate{font-size:12px;color:var(--safe);font-weight:700}
+.wsf.invalid input,.wsf.invalid select{border-color:var(--warn);background:var(--warnBg)}
 .wssub{grid-column:1/-1;font-size:11.5px;font-weight:700;color:var(--exempt);margin:10px 0 -2px;padding-top:8px;border-top:1px solid var(--line)}
 .wsval{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
 .wsval .cell{background:var(--exemptBg);border:1px solid #c9dced;border-radius:8px;padding:7px 9px}
@@ -518,7 +520,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <div class="wsgrid">
 <div class="wssub">発送・提出者情報</div>
 <div class="wsf"><label>発送方法</label><select id="ws_carrier"><option value="dhl">DHL（ワークシート2枚提出）</option><option value="fedex">FedEx（検査時に提出）</option></select></div>
-<div class="wsf"><label>日付 Date <span class="req">*</span></label><input id="ws_date" type="date"></div>
+<div class="wsf"><label>日付 Date <span class="req">*</span> <span class="wsnote">書類の作成日＝出荷日（販売日ではない）</span></label><input id="ws_date" type="date"></div>
 <div class="wsf"><label>会社名 Company <span class="req">*</span></label><input id="ws_company" placeholder="発送元の会社名"></div>
 <div class="wsf"><label>氏名・役職 Name/Title <span class="req">*</span></label><input id="ws_name" placeholder="担当者名"></div>
 <div class="wsf"><label>AWB番号 <span class="opt">任意</span></label><input id="ws_awb" placeholder="分かる場合"></div>
@@ -528,7 +530,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <div class="wssub">時計の仕様</div>
 <div class="wsf"><label>駆動方式 Power <span class="req">*</span></label><select id="ws_power"><option value="mech">機械式（Analog Mechanical）</option><option value="auto">自動巻（Automatic Self-Winding）</option><option value="manual">手巻（Manual）</option><option value="batt">電池式（Electric Battery）</option><option value="digital">デジタル（Digital）</option></select></div>
 <div class="wsf"><label>宝石数 Jewels <span class="req">*</span></label><select id="ws_jewels"><option value="0-1 Jewels">0〜1石（クォーツの標準）</option><option value="2 to 7 Jewels">2〜7石</option><option value="8 to 17 Jewels">8〜17石</option><option value="over 17 Jewels">17石超</option></select></div>
-<div class="wsf wshts" style="grid-column:1/-1"><label>HTSコード <span class="autobadge">自動算出</span> <span class="wsnote">駆動方式・宝石数・ストラップ素材・ケースめっきから自動で決まります（属性から算出するので矛盾しません）</span></label><input id="ws_hts" placeholder="属性を選ぶと自動表示" readonly><div class="wshint" id="ws_hts_note"></div></div>
+<div class="wsf wshts" style="grid-column:1/-1"><label>HTSコード <span class="autobadge">自動算出</span> <span class="opt">クリックでコピー</span> <span class="wsnote">駆動方式・宝石数・ストラップ素材・ケースめっきから自動で決まります（属性から算出するので矛盾しません）</span></label><input id="ws_hts" placeholder="属性を選ぶと自動表示" readonly title="クリックでコピー"><div class="wshint" id="ws_hts_rate"></div><div class="wshint" id="ws_hts_note"></div></div>
 <div class="wsf fx-only"><label>数量 Quantity <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><input id="ws_qty" type="number" min="1" value="1"></div>
 <div class="wsf fx-only"><label>時計スタイル <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_style"><option value="Wrist">腕時計（Wrist）</option><option value="Pocket">懐中時計（Pocket）</option><option value="Other">その他（Other）</option></select></div>
 <div class="wsf fx-only"><label>主機能 Function <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_func"><option value="timekeeping">計時（timekeeping）</option><option value="GPS">GPS</option><option value="heart monitor">心拍（heart monitor）</option><option value="pedometer">歩数計（pedometer）</option><option value="other">その他（other）</option></select></div>
@@ -1106,6 +1108,7 @@ render();renderFull();
   // 属性→HTS 9102コード自動算出(コードと素材を紐付け・矛盾を構造的に防ぐ)
   // 軸=ムーブメント(駆動×表示)→宝石数→ストラップ素材(繊維/卑金属 vs その他)→ケースめっき(9102.11のみ)
   // 検証済: 9102.11.25.00=quartz/0-1石/繊維卑金属strap/非めっき(card136)・9102.21.50.00=auto/2-17石/その他strap(card137)
+  const WRATES={"91021110": "44¢/個 ＋ ケース6% ＋ バンド14% ＋ 電池5.3%", "91021125": "40¢/個 ＋ ケース8.5% ＋ バンド14% ＋ 電池5.3%", "91021130": "44¢/個 ＋ ケース6% ＋ バンド2.8% ＋ 電池5.3%", "91021145": "40¢/個 ＋ ケース8.5% ＋ バンド2.8% ＋ 電池5.3%", "91021150": "80¢/個 ＋ ケース6% ＋ バンド14% ＋ 電池5.3%", "91021165": "76¢/個 ＋ ケース8.5% ＋ バンド14% ＋ 電池5.3%", "91021170": "80¢/個 ＋ ケース6% ＋ バンド2.8% ＋ 電池5.3%", "91021195": "76¢/個 ＋ ケース8.5% ＋ バンド2.8% ＋ 電池5.3%", "91021280": "Free", "91021920": "32¢/個 ＋ ケース4.8% ＋ バンド11% ＋ 電池4.2%", "91021940": "32¢/個 ＋ ケース4.8% ＋ バンド2.2% ＋ 電池4.2%", "91021960": "57¢/個 ＋ ケース4.5% ＋ バンド10.6% ＋ 電池4%", "91021980": "57¢/個 ＋ ケース4.5% ＋ バンド2.1% ＋ 電池4%", "91022110": "75¢/個 ＋ ケース6% ＋ バンド14%", "91022125": "75¢/個 ＋ ケース6% ＋ バンド2.8%", "91022130": "$1.75/個 ＋ ケース4.8% ＋ バンド11.2%", "91022150": "$1.75/個 ＋ ケース4.8% ＋ バンド2.2%", "91022170": "$1.53/個 ＋ ケース4.2% ＋ バンド9.8%", "91022190": "$1.53/個 ＋ ケース4.2% ＋ バンド2%", "91022904": "40¢/個 ＋ ケース6%", "91022910": "40¢/個 ＋ ケース6% ＋ バンド2.8%", "91022915": "58¢/個 ＋ ケース4.6% ＋ バンド10.6%", "91022920": "56¢/個 ＋ ケース4.4% ＋ バンド2%", "91022945": "93¢/個 ＋ ケース4.8% ＋ バンド11.2%", "91022950": "93¢/個 ＋ ケース4.8% ＋ バンド2.2%", "91022955": "$1.55/個 ＋ ケース4.2% ＋ バンド9.9%", "91022960": "$1.75/個 ＋ ケース4.8% ＋ バンド2.2%"};  // 9102コード(8桁)→日本語複合税率
   function strapTB(){return ['Metal','Textile'].includes(g('ws_strap_mat').value);}  // 繊維/卑金属の枝か
   function casePlated(){return ['Gold-Plated Steel','Silver-Plated Metal','Two-tone (Steel and Gold-Plated)','Solid Precious Metal'].includes(g('ws_case_mat').value);}
   function computeWatchCode(){
@@ -1132,11 +1135,16 @@ render();renderFull();
       else code = tb?'9102.29.55.00':'9102.29.60.00';
     }
     g('ws_hts').value=code;
+    const rate=WRATES[nd(code).slice(0,8)]||'';
+    const rn=g('ws_hts_rate'); if(rn) rn.textContent=rate?('参考税率 '+rate):'';
     const hn=g('ws_hts_note');
     if(hn){ const strapTxt=tb?'ストラップ=繊維/卑金属の枝':'ストラップ=その他(革/貴金属/樹脂等)の枝';
       const caseTxt=code.indexOf('9102.11')===0?(plated?'・金銀めっきケース':'・非めっきケース'):'';
       hn.innerHTML='▶ '+esc(strapTxt+caseTxt)+(note?'<br>'+esc(note):''); }
   }
+  // 算出コードはクリックでコピー(各カードと同じ操作感)
+  g('ws_hts').addEventListener('click',()=>{const v=g('ws_hts').value;if(v){if(navigator.clipboard)navigator.clipboard.writeText(v).catch(()=>{});toast('コピー: '+v);}});
+  g('ws_hts').style.cursor='pointer';
   ['ws_power','ws_disp','ws_jewels','ws_strap_mat','ws_case_mat'].forEach(id=>g(id).addEventListener('change',computeWatchCode));
   const E=s=>esc(s||'');
   function box(on){return on?'[ X ]':'[&nbsp;&nbsp;&nbsp;]';}
@@ -1200,7 +1208,22 @@ render();renderFull();
       +'<div class="note">Up to 8 watches per sheet. Add a column for each additional watch.</div>'
       +'</div>';
   }
+  // 必須(日付/会社名/氏名/総額)が空ならプリントさせない(空欄のまま出力する事故を防ぐ)
+  function wsValidate(){
+    const req=[['ws_date','日付'],['ws_company','会社名'],['ws_name','氏名'],['ws_total','総額']];
+    const miss=[];
+    req.forEach(([id,label])=>{
+      const el=g(id), wrap=el.closest('.wsf');
+      const empty=!el.value.trim() || (id==='ws_total' && !(parseFloat(el.value)>0));
+      wrap.classList.toggle('invalid',empty);
+      if(empty) miss.push(label);
+    });
+    return miss;
+  }
+  ['ws_date','ws_company','ws_name','ws_total'].forEach(id=>g(id).addEventListener('input',()=>g(id).closest('.wsf').classList.remove('invalid')));
   g('ws_printbtn').addEventListener('click',()=>{
+    const miss=wsValidate();
+    if(miss.length){ g('ws_done').innerHTML='<span style="color:var(--warn)">⚠️ 必須項目が未入力です：'+esc(miss.join('・'))+'（赤枠を埋めてください）</span>'; return; }
     const st=vals();
     const caseMat=(g('ws_case_mat').value.trim()||'Stainless Steel');  // datalist入力(英語)
     const strapMat=(g('ws_strap_txt').value.trim()?g('ws_strap_mat').value+' ('+g('ws_strap_txt').value.trim()+')':g('ws_strap_mat').value);
