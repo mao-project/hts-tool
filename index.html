@@ -1138,7 +1138,7 @@ render();renderFull();
     box.innerHTML='<b>🔋 CpaSSの「リチウム電池」欄で選ぶもの</b>'
       +'<div class="pick">'+esc(pick)+'</div>'
       +'<div class="why">理由：'+esc(why)+'</div>'
-      +(cls==='li'?'<div class="why">※やること＝電池種類ごとに個別梱包（1梱包にまとめない）。<b>この申告で送れなくなることはなく、クーリエ（FedEx）での正しい発送方法です</b>（DG申告書は不要・必要なラベル/書類はCpaSS側が付与）。予備電池を別送する時だけ「機器と共に包装（PI969）」を選ぶ。</div>':'');
+      +(cls==='li'?'<div class="why"><b>この申告で送れなくなることはなく、クーリエ（FedEx）での正しい発送方法です</b>（荷送人のDG申告書は不要・AWBの記載はOCが付与）。<b>腕時計は1梱包2個までならラベル不要。3個以上も同梱できますが、その場合はセラーがUN3091リチウム電池ラベルを貼ります</b>（SpeedPAKマニュアル2026・PI970 SECT II）。電池種類が違うものは分けて梱包。予備電池を別送する時だけ「機器と共に包装（PI969）」を選ぶ。</div>':'');
   }
   function computeWatchCode(){
     const p=g('ws_power').value, disp=g('ws_disp').value, jw=g('ws_jewels').value;
