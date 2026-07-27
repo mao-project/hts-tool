@@ -951,8 +951,11 @@ function render(){
       : it.cpsccat==='Imitation Jewelry' ? '<code>Adult Product</code> ＞ <code>Used</code>（成人向け＝児童製品規則の対象外・<b>Disclaim A</b>）'
       // 成人衣料は16 CFR 1610が適用されるので「規則が適用されない(Disclaim A)」ではなく素材免除(Disclaim B)が本来の根拠
       // 公式リスト掲載のアパレル(cpsccat=Clothing)も同じ根拠になる
+      // 中古の成人向けアパレルは Used と Adult Apparel with: のどちらでも成立する(Cpass運用マニュアル
+      // 「免除条件」が3条件を並列に列挙)。全品中古なので Used は常に成立し、生地重量の実測が要らない
       : (it.v==='vol'||it.cpsccat==='Clothing')
-        ? '<code>Adult Apparel with:</code>（素材条件＝16 CFR 1610.1(d)免除・<b>Disclaim B</b>。中古/新品を問わない）' : '';
+        ? '<code>Adult Product</code> ＞ <code>Used</code>（全品中古なので常に成立。生地の重量を測る必要はありません）'
+          + '<br>　<span class="g">別ルート：<code>Adult Apparel with:</code>（素材条件＝16 CFR 1610.1(d)・Disclaim B。新品でも使えるが素材/重量の確認が要る）</span>' : '';
     const eline = etype?`<br>▶ <b>Cpassの免除選択</b>：${etype}`:'';
     const cpsc = it.v==='exempt'
       ? `<div class="cpscbox must">🟦 <b>CPSC eFiling 対象</b>（公式HTSリスト掲載${it.cpsccat?'：'+esc(it.cpsccat):''}）— CBPがCP1/CP2フラグを付けます。<b>証明書か免除申告(Disclaim)で対応</b>。<b>未提出のみを理由にCBPが申告を自動拒否することはありません</b>（CSMS #69177694）が、<b>規制要件は有効</b>で、免除申告はCPSCの<b>リスクスコア改善のため公式に推奨</b>されています${eline}</div>`
@@ -975,10 +978,10 @@ function render(){
     function fabricLine(f){
       if(!f) return '';
       const p=f.split('|');
-      if(p[0]==='M') return `<div class="fabsel">▶ 選ぶ免除：<b>素材ルート</b>（1つ目 <code>Material includes acrylic … OR polyester</code>）<span class="g">※条文は「6繊維のみで構成」。綿など他繊維の混紡はこのルート不可</span></div>`;
-      if(p[0]==='W') return `<div class="fabsel">▶ 選ぶ免除：<b>重量ルート</b>（<code>Fabric weight ≥ 2.6 oz/yard</code>）＋ Fabric Type：<code class="ftype">${esc(p[1])}</code></div>`;
-      if(p[0]==='W?') return `<div class="fabsel">▶ 選ぶ免除：<b>重量ルート</b>（<code>Fabric weight ≥ 2.6 oz/yard</code>）＋ Fabric Type：<code class="ftype">${esc(p[1])}</code><br>⚠️ ${esc(p[2]||'')}</div>`;
-      if(p[0]==='C') return `<div class="fabsel warn2">▶ 選ぶ免除は<b>実物で分岐</b>：${esc(p.slice(1).join('|'))}</div>`;
+      if(p[0]==='M') return `<div class="fabsel">▶ <span class="g">別ルート</span>：<b>素材ルート</b>（1つ目 <code>Material includes acrylic … OR polyester</code>）<span class="g">※条文は「6繊維のみで構成」。綿など他繊維の混紡はこのルート不可</span></div>`;
+      if(p[0]==='W') return `<div class="fabsel">▶ <span class="g">別ルート</span>：<b>重量ルート</b>（<code>Fabric weight ≥ 2.6 oz/yard</code>）＋ Fabric Type：<code class="ftype">${esc(p[1])}</code></div>`;
+      if(p[0]==='W?') return `<div class="fabsel">▶ <span class="g">別ルート</span>：<b>重量ルート</b>（<code>Fabric weight ≥ 2.6 oz/yard</code>）＋ Fabric Type：<code class="ftype">${esc(p[1])}</code><br>⚠️ ${esc(p[2]||'')}</div>`;
+      if(p[0]==='C') return `<div class="fabsel warn2">▶ <span class="g">別ルート</span>は<b>実物で分岐</b>：${esc(p.slice(1).join('|'))}</div>`;
       if(p[0]==='X') return `<div class="fabsel ng2">🚫 <b>免除に乗らない</b>：${esc(p.slice(1).join('|'))}</div>`;
       return '';
     }
@@ -992,10 +995,10 @@ function render(){
             : it.cpsccat==='Toys'
             ? '<b class="do">Cpassで免除申告</b> → <code>Toy</code> ＞ <code>Age&gt;13</code>'
             : it.cpsccat==='Clothing'
-            ? '<b class="do">Cpassで免除申告</b> → <code>Adult Apparel with:</code>（素材条件）'
+            ? '<b class="do">Cpassで免除申告</b> → <code>Adult Product</code> ＞ <code>Used</code>　<span class="g">（別ルート：Adult Apparel with: 素材条件）</span>'
             : '<b class="do">Cpassで免除申告</b> → <code>Adult Product</code> ＞ <code>Used</code>')
-      : it.v==='vol'  ? ('<b class="opt">任意（省略してよい）</b>　出す場合のみ '
-          + (it.dsc==='A' ? '<code>Adult Product</code> ＞ <code>Used</code>' : '<code>Adult Apparel with:</code>（素材条件）'))
+      // 「省略してよい」だと欄が出ていても飛ばされる。押す場所が有る時は押す(無料・リスクスコア上有利)
+      : it.v==='vol'  ? '<b class="opt">任意（Cpassに欄が出たときだけ）</b>　→ <code>Adult Product</code> ＞ <code>Used</code>'
       : it.v==='warn' ? '<b class="ng">取扱不可</b>'
       : '<b class="none">不要</b>　<span class="g">CPSC公式リスト対象外（免除フォームは出ません）</span>') + fab;
     // 「通常どおり」では何をするか伝わらないので、必ず具体的な配送手段を書く
