@@ -41,6 +41,9 @@ h1{font-size:19px;margin:0 0 2px;letter-spacing:.02em;text-wrap:balance}
 .shipref li{margin:3px 0;font-size:13px;line-height:1.55}
 .shipsrc{margin-top:12px;font-size:11px;color:#888}
 .rules b{color:var(--ink)} .rules ol{margin:0;padding:10px 14px 12px 32px} .rules li{margin:4px 0}
+/* 詳細HTS検索(590行の表)は既定で畳む＝腕時計カードとウォッチシート欄の行き来に挟まらないように */
+.bigfoldb{padding:12px 14px 14px}
+.bigfoldb p{font-size:12.5px;color:var(--ink2);line-height:1.7;margin:0 0 10px}
 .rlegend{list-style:none;margin:6px 0 0;padding:0}
 .rlegend li{margin:6px 0;line-height:1.5}
 .rlegend .badge{display:inline-block;vertical-align:baseline;margin-right:7px}
@@ -176,6 +179,10 @@ padding:7px 10px;margin:0 0 6px;font-size:12px;color:var(--warn);line-height:1.5
 .wnwhy .br{background:#eef4fa;border:1px solid #d8e4ef;border-radius:5px;padding:1px 7px;color:var(--exempt);font-weight:700}
 .wncp{margin-top:6px;font-size:12px;font-weight:700;line-height:1.5}
 .wncp.ok{color:var(--safe)} .wncp.ng{color:var(--warn)} .wncp.unk{color:var(--muted);font-weight:600}
+/* 貴金属ケース＝9101 の説明(分量があるので枠に入れて通常ウェイトで読ませる) */
+.wnpm{margin-top:7px;background:#fff8e8;border:1px solid #ecd9a8;border-left:4px solid var(--vol);
+  border-radius:7px;padding:8px 11px;font-size:12.5px;color:#6b5310;line-height:1.65}
+.wnpm b{color:var(--vol)} .wnpm code{background:#fff;border:1px solid #e6d5ab}
 /* 未選択のあいだ手順①②を伏せておく(既定値で誤ったコードを出さないため) */
 .wnwait{background:var(--volBg);border:1px solid #e8d5a8;border-left:4px solid var(--vol);border-radius:7px;
   padding:8px 11px;font-size:12.5px;color:#6b5310;font-weight:600;line-height:1.5}
@@ -468,7 +475,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 　→ Cpassの <code>Toy ＞ Age&gt;13</code>（14歳以上向け＝児童製品でない）と <code>Adult Product ＞ Used</code>（成人向け＝児童製品規則の対象外）はこれに当たります。</p>
 <p>・<b>Disclaim B</b>＝規則はあるが<b>CPSCが執行裁量</b>で証明書を求めない製品。<b>成人衣料で 16 CFR 1610.1(d)(1)/(d)(2) の免除を主張するもの</b>／家庭用冷蔵庫(認証マーク付)／室内装飾家具(16 CFR 1640のみ適用時)／個人使用品の修理輸出→再輸入／<b>海外の消費者から米国の消費者への贈り物</b>。<br>
 　→ Cpassの <code>Adult Apparel with:</code>（素材条件）はこれに当たります。</p>
-<p>📗 <b>CPSCが公式に挙げている例</b>（<i>eFiling Citation, Testing, Exclusion, and Disclaim Guidance v3</i>・2026-02-27）。<b>当店の主力がそのまま名指しされています</b>。<br>
+<p>📗 <b>CPSCが公式に挙げている例</b>（<i>eFiling Citation, Testing, Exclusion, and Disclaim Guidance v3</i>・2026-02-27）。<b>中古のコレクター向け玩具・スカーフがそのまま名指しされています</b>。<br>
 　・<b>Disclaim A</b>：<b>Hats, scarves, gloves</b>／<b>Collectible toys intended for adults</b>（＝14歳以上向けのコレクター玩具）／自転車用以外のスポーツヘルメット／drawstring以外の15(j)製品／医療類似品・産業用機器（管轄外）。<br>
 　・<b>Disclaim B</b>：16 CFR 1610.1(d)(1)/(d)(2) の免除を主張する成人衣料／認証マーク付きの家庭用冷蔵庫。<br>
 　→ <b>スカーフはCPSC自身がDisclaim Aの例に挙げています</b>＝可燃性規則の素材条件(Disclaim B)を満たすかどうかを問う必要がありません。<b>マフラー・帽子・手袋も同じ扱い</b>。<br>
@@ -551,8 +558,9 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 </div></details>
 </div>
 
-<div class="section">
-<h2>詳細HTS検索（CPSC公式eFiling対象 590コード・全23カテゴリ）</h2>
+<details class="rules bigfold">
+<summary tabindex="0"><b>🔎 詳細HTS検索（CPSC公式eFiling対象 590コード・全23カテゴリ）</b><span class="rsub">公式リストの参照用（出荷作業では不要）</span></summary>
+<div class="bigfoldb">
 <p>10桁コード・6桁HS・品目名・カテゴリで、CPSC公式eFiling HTSリスト（<b>April 2026版</b>）を直接検索。<br>※<b>実際に申告するコードは上の「商品名検索」が推奨を出します</b>。ここは公式リストの参照用。<b>掲載コードはCBPがCP1/CP2フラグを付ける対象</b>（未提出のみを理由に申告が自動拒否されることはありませんが、規制要件は有効です）。</p>
 <details class="htshelp"><summary tabindex="0">対応列の見方 <span class="g">🟦証明書 or 免除申告 ／ 🟥CPC必須 ／ ※子供用はCPC</span></summary>
 <div class="htshelp-body">
@@ -569,14 +577,14 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <div style="overflow-x:auto"><table class="htstbl"><thead>
 <tr><th>米国HTS(10桁)</th><th>HS(6桁)</th><th>類</th><th class="desc">品目概要</th><th>対応</th></tr></thead><tbody id="fbody"></tbody></table></div>
 <div class="more2" id="more2"></div>
-</div>
+</div></details>
 
 <div class="section wsec">
 <h2>🕐 腕時計ウォッチシート生成（クーリエ発送用）</h2>
 <div class="wsintro"><b>クーリエ発送（DHL/FedEx）で腕時計を送る時だけ必要</b>です。エコノミーの機械式時計は不要。<b>電池式はエコノミー不可＝クーリエのみ</b>。<br>総額を入力すると <b>Movement／Case／Strap／Battery</b> に<b>比率で按分</b>します（パーツ実額は不要・比率は編集可）。⚠️ <b>ストラップは税率が最も高い</b>ので按分は関税額に影響します。<br><span class="req">*</span>＝必須（DHL・FedExとも）。<span class="fxbadge">FedExのみ</span>＝DHLでは不要（DHL選択時は自動グレー・入力不可。バッジ内に <span class="req">*</span> があればFedEx選択時は必須）。<b>素材・原産国・電池は日本語で選べます（シートは英語で出力）</b>。中古で分からない項目は「不明（Unknown）」でも構いません（虚偽でなく実務上分かる範囲で）。<b>ただし原産国は税関の必須項目</b>なので、できる範囲で特定を（時計本体やムーブメントに Japan / Swiss / China 等の刻印が多い）。会社名・署名は<b>公開ツールに保存しません</b>。</div>
 <div class="wsgrid">
 <div class="wssub">発送・提出者情報</div>
-<div class="wsf"><label>発送方法</label><select id="ws_carrier"><option value="dhl">DHL（ワークシート2枚提出）</option><option value="fedex">FedEx（検査時に提出）</option></select></div>
+<div class="wsf"><label>発送方法</label><select id="ws_carrier"><option value="fedex">FedEx（検査時に提出）</option><option value="dhl">DHL（ワークシート2枚提出）</option></select></div>
 <div class="wsf"><label>日付 Date <span class="req">*</span> <span class="wsnote">書類の作成日＝出荷日（販売日ではない）</span></label><input id="ws_date" type="date"></div>
 <div class="wsf"><label>会社名 Company <span class="req">*</span></label><input id="ws_company" placeholder="発送元の会社名"></div>
 <div class="wsf"><label>氏名・役職 Name/Title <span class="req">*</span></label><input id="ws_name" placeholder="担当者名"></div>
@@ -596,7 +604,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <div class="wsf fx-only"><label>ムーブメント原産国（主）<span class="fxbadge">FedExのみ</span> <span class="req">*</span> <span class="wsnote">選ぶと他の原産国にも自動反映（個別に上書き可）。特定できなければ「不明」を選ぶ（空欄不可）</span></label><select id="ws_mov_origin"><option value="">— 選択 —</option><option value="Japan">日本（Japan）</option><option value="China">中国（China）</option><option value="Switzerland">スイス（Switzerland）</option><option value="Hong Kong">香港（Hong Kong）</option><option value="South Korea">韓国（Korea）</option><option value="Taiwan">台湾（Taiwan）</option><option value="Germany">ドイツ（Germany）</option><option value="France">フランス（France）</option><option value="Unknown">不明（Unknown）</option></select></div>
 
 <div class="wssub">素材・原産国 <span class="wsnote">日本語で選ぶ→シートは英語。中古で分からない項目は「不明」でも可（ただし原産国はできる範囲で特定を＝税関の必須項目）。</span></div>
-<div class="wsf"><label>ケース素材 Case <span class="req">*</span></label><select id="ws_case_mat"><option value="Stainless Steel">ステンレス（Stainless Steel）</option><option value="Base Metal Alloy">卑金属・合金（Base Metal Alloy）</option><option value="Gold-Plated Steel">金メッキ（Gold-Plated Steel）</option><option value="Silver-Plated Metal">銀メッキ（Silver-Plated Metal）</option><option value="Two-tone (Steel and Gold-Plated)">ツートン ステンレス＋金メッキ</option><option value="Titanium">チタン（Titanium）</option><option value="Plastic / Resin">プラスチック・樹脂（Plastic/Resin）</option><option value="Ceramic">セラミック（Ceramic）</option><option value="Solid Precious Metal">貴金属無垢（Solid Precious Metal）</option><option value="Unknown">不明（Unknown）</option></select></div>
+<div class="wsf"><label>ケース素材 Case <span class="req">*</span></label><select id="ws_case_mat"><option value="Stainless Steel">ステンレス（銀色・磁石が付かない）</option><option value="Base Metal Alloy">卑金属・合金</option><option value="Gold-Plated Steel">金メッキ（GP・GEP の刻印／9102のまま）</option><option value="Silver-Plated Metal">銀メッキ（9102のまま）</option><option value="Two-tone (Steel and Gold-Plated)">ツートン（銀＋金メッキ）</option><option value="Titanium">チタン</option><option value="Plastic / Resin">プラスチック・樹脂</option><option value="Ceramic">セラミック</option><option value="Solid Gold">金無垢（18K・14K・750・585 の刻印）→ 9101</option><option value="Solid Platinum">プラチナ無垢（PT900・PT950・PLAT）→ 9101</option><option value="Solid Silver">銀無垢（SILVER・925・SV）→ 9101</option><option value="Gold-Filled / Rolled Gold">金張り・ゴールドフィルド（GF・RGP・1/20 12K）→ 9101</option><option value="Unknown">分からない</option></select></div>
 <div class="wsf"><label>ストラップ素材 Strap <span class="req">*</span></label><select id="ws_strap_mat"><option value="Metal">金属（Metal）</option><option value="Leather">革（Leather）</option><option value="Textile">繊維（Textile）</option><option value="Other">その他（Other）</option><option value="No Band">バンドなし（No Band）</option></select></div>
 <div class="wsf"><label id="ws_strap_txt_lb">ストラップ詳細 <span class="opt">任意</span></label><select id="ws_strap_txt"></select></div>
 <div class="wsf" id="ws_emb_wrap" style="display:none"><label>加工 <span class="opt">任意</span></label><label class="wschk"><input type="checkbox" id="ws_embossed"> 型押し（クロコ調・リザード調などの模様プレス）</label></div>
@@ -646,7 +654,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 </ul>
 <h4>関税の払い方（DDP / DDU）</h4>
 <ul>
-<li><b>DDP</b>＝関税・手数料を<b>出品者がOCへ前払い</b>（バイヤーに着払いなし）。当店は全世界DDP運用。</li>
+<li><b>DDP</b>＝関税・手数料を<b>出品者がOCへ前払い</b>（バイヤーに着払いなし）。全世界DDPで運用する場合はこちら。</li>
 <li><b>DDU</b>＝バイヤーが着払い。受取時に驚かれてクレーム→アカウント評価低下のリスク。</li>
 </ul>
 <h4>通関に必須の情報</h4>
@@ -939,7 +947,7 @@ function didYouMean(q){
    実物を見て選ぶだけで答えが出る形にした(2026-07-31)。算出の軸はUSITCの階層そのもの
    (駆動×表示→宝石数→ストラップ素材→ケースのめっき)なので属性とコードが食い違わない。
    ★ウォッチシート欄(.wsec)と同じ watchCodeOf() を使う＝二重管理しない。 */
-const WRATES={"91021110": "44¢/個 ＋ ケース6% ＋ バンド14% ＋ 電池5.3%", "91021125": "40¢/個 ＋ ケース8.5% ＋ バンド14% ＋ 電池5.3%", "91021130": "44¢/個 ＋ ケース6% ＋ バンド2.8% ＋ 電池5.3%", "91021145": "40¢/個 ＋ ケース8.5% ＋ バンド2.8% ＋ 電池5.3%", "91021150": "80¢/個 ＋ ケース6% ＋ バンド14% ＋ 電池5.3%", "91021165": "76¢/個 ＋ ケース8.5% ＋ バンド14% ＋ 電池5.3%", "91021170": "80¢/個 ＋ ケース6% ＋ バンド2.8% ＋ 電池5.3%", "91021195": "76¢/個 ＋ ケース8.5% ＋ バンド2.8% ＋ 電池5.3%", "91021280": "Free", "91021920": "32¢/個 ＋ ケース4.8% ＋ バンド11% ＋ 電池4.2%", "91021940": "32¢/個 ＋ ケース4.8% ＋ バンド2.2% ＋ 電池4.2%", "91021960": "57¢/個 ＋ ケース4.5% ＋ バンド10.6% ＋ 電池4%", "91021980": "57¢/個 ＋ ケース4.5% ＋ バンド2.1% ＋ 電池4%", "91022110": "75¢/個 ＋ ケース6% ＋ バンド14%", "91022125": "75¢/個 ＋ ケース6% ＋ バンド2.8%", "91022130": "$1.75/個 ＋ ケース4.8% ＋ バンド11.2%", "91022150": "$1.75/個 ＋ ケース4.8% ＋ バンド2.2%", "91022170": "$1.53/個 ＋ ケース4.2% ＋ バンド9.8%", "91022190": "$1.53/個 ＋ ケース4.2% ＋ バンド2%", "91022904": "40¢/個 ＋ ケース6%", "91022910": "40¢/個 ＋ ケース6% ＋ バンド2.8%", "91022915": "58¢/個 ＋ ケース4.6% ＋ バンド10.6%", "91022920": "56¢/個 ＋ ケース4.4% ＋ バンド2%", "91022945": "93¢/個 ＋ ケース4.8% ＋ バンド11.2%", "91022950": "93¢/個 ＋ ケース4.8% ＋ バンド2.2%", "91022955": "$1.55/個 ＋ ケース4.2% ＋ バンド9.9%", "91022960": "$1.75/個 ＋ ケース4.8% ＋ バンド2.2%"};   // 9102コード(8桁)→日本語の複合税率
+const WRATES={"91021110": "44¢/個 ＋ ケース6% ＋ バンド14% ＋ 電池5.3%", "91021125": "40¢/個 ＋ ケース8.5% ＋ バンド14% ＋ 電池5.3%", "91021130": "44¢/個 ＋ ケース6% ＋ バンド2.8% ＋ 電池5.3%", "91021145": "40¢/個 ＋ ケース8.5% ＋ バンド2.8% ＋ 電池5.3%", "91021150": "80¢/個 ＋ ケース6% ＋ バンド14% ＋ 電池5.3%", "91021165": "76¢/個 ＋ ケース8.5% ＋ バンド14% ＋ 電池5.3%", "91021170": "80¢/個 ＋ ケース6% ＋ バンド2.8% ＋ 電池5.3%", "91021195": "76¢/個 ＋ ケース8.5% ＋ バンド2.8% ＋ 電池5.3%", "91021280": "Free", "91021920": "32¢/個 ＋ ケース4.8% ＋ バンド11% ＋ 電池4.2%", "91021940": "32¢/個 ＋ ケース4.8% ＋ バンド2.2% ＋ 電池4.2%", "91021960": "57¢/個 ＋ ケース4.5% ＋ バンド10.6% ＋ 電池4%", "91021980": "57¢/個 ＋ ケース4.5% ＋ バンド2.1% ＋ 電池4%", "91022110": "75¢/個 ＋ ケース6% ＋ バンド14%", "91022125": "75¢/個 ＋ ケース6% ＋ バンド2.8%", "91022130": "$1.75/個 ＋ ケース4.8% ＋ バンド11.2%", "91022150": "$1.75/個 ＋ ケース4.8% ＋ バンド2.2%", "91022170": "$1.53/個 ＋ ケース4.2% ＋ バンド9.8%", "91022190": "$1.53/個 ＋ ケース4.2% ＋ バンド2%", "91022904": "40¢/個 ＋ ケース6%", "91022910": "40¢/個 ＋ ケース6% ＋ バンド2.8%", "91022915": "58¢/個 ＋ ケース4.6% ＋ バンド10.6%", "91022920": "56¢/個 ＋ ケース4.4% ＋ バンド2%", "91022945": "93¢/個 ＋ ケース4.8% ＋ バンド11.2%", "91022950": "93¢/個 ＋ ケース4.8% ＋ バンド2.2%", "91022955": "$1.55/個 ＋ ケース4.2% ＋ バンド9.9%", "91022960": "$1.75/個 ＋ ケース4.8% ＋ バンド2.2%", "91011140": "51¢/個 ＋ ケースとバンド6.25% ＋ 電池5.3%", "91011180": "87¢/個 ＋ ケースとバンド6.25% ＋ 電池5.3%", "91011920": "Free", "91011940": "41¢/個 ＋ ケースとバンド5% ＋ 電池4.2%", "91011980": "61¢/個 ＋ ケースとバンド4.4% ＋ 電池3.7%", "91012150": "Free", "91012180": "$1.61/個 ＋ ケースとバンド4.4%", "91012910": "40¢/個 ＋ ケースとバンド5%", "91012920": "61¢/個 ＋ ケースとバンド4.4%", "91012950": "90¢/個 ＋ ケースとバンド4.4%", "91012990": "Free"};   // 9102コード(8桁)→日本語の複合税率
 // ストラップ詳細の選択肢(ウォッチシートと共用)。革は「税関を通せる家畜革」だけ載せ、
 // それ以外は __ESC__ で運営に回す(選択肢から消すだけだと"分からない革"を牛革と誤申告させるため)
 const STRAP_OPTS={
@@ -959,15 +967,13 @@ const WPOWER={
 };
 const WJEWELS=[['0-1 Jewels','0〜1石（クォーツの標準）'],['2 to 7 Jewels','2〜7石'],
   ['8 to 17 Jewels','8〜17石（17 JEWELS はここ）'],['over 17 Jewels','18石以上（21・23石など）']];
-const WCASE=[['Stainless Steel','ステンレス（銀色・磁石が付かない）'],['Base Metal Alloy','卑金属・合金'],
-  ['Gold-Plated Steel','金メッキ（金色）'],['Silver-Plated Metal','銀メッキ'],
-  ['Two-tone (Steel and Gold-Plated)','ツートン（銀＋金メッキ）'],['Titanium','チタン'],
-  ['Plastic / Resin','プラスチック・樹脂'],['Ceramic','セラミック'],
-  ['Solid Precious Metal','金・プラチナの無垢（メッキではない）'],['Unknown','分からない']];
+const WCASE=[["Stainless Steel", "ステンレス（銀色・磁石が付かない）"], ["Base Metal Alloy", "卑金属・合金"], ["Gold-Plated Steel", "金メッキ（GP・GEP の刻印／9102のまま）"], ["Silver-Plated Metal", "銀メッキ（9102のまま）"], ["Two-tone (Steel and Gold-Plated)", "ツートン（銀＋金メッキ）"], ["Titanium", "チタン"], ["Plastic / Resin", "プラスチック・樹脂"], ["Ceramic", "セラミック"], ["Solid Gold", "金無垢（18K・14K・750・585 の刻印）→ 9101"], ["Solid Platinum", "プラチナ無垢（PT900・PT950・PLAT）→ 9101"], ["Solid Silver", "銀無垢（SILVER・925・SV）→ 9101"], ["Gold-Filled / Rolled Gold", "金張り・ゴールドフィルド（GF・RGP・1/20 12K）→ 9101"], ["Unknown", "分からない"]];   // ウォッチシートのケース素材selectと同じリスト(Python側で一元定義)
 // 申告名称に使う英語(記号ゼロ＝クーリエの様式に合わせる)
 const WCASE_EN={'Stainless Steel':'Stainless Steel','Base Metal Alloy':'Base Metal','Gold-Plated Steel':'Gold Plated',
   'Silver-Plated Metal':'Silver Plated','Two-tone (Steel and Gold-Plated)':'Steel and Gold Plated',
-  'Titanium':'Titanium','Plastic / Resin':'Plastic','Ceramic':'Ceramic','Unknown':'Metal'};
+  'Titanium':'Titanium','Plastic / Resin':'Plastic','Ceramic':'Ceramic','Unknown':'Metal',
+  'Solid Gold':'Solid Gold','Solid Platinum':'Solid Platinum','Solid Silver':'Solid Silver',
+  'Gold-Filled / Rolled Gold':'Gold Filled'};
 const WSTRAP_EN={'Stainless Steel':'Stainless Steel','Base Metal Alloy':'Base Metal','Gold-Plated Metal':'Gold Plated Metal',
   'Titanium':'Titanium','Nylon':'Nylon','NATO Nylon':'Nylon','Canvas':'Canvas','Fabric':'Textile',
   'Cowhide (bovine)':'Cowhide Leather','Calfskin (bovine)':'Calfskin Leather','Buffalo hide (bovine)':'Buffalo Hide Leather',
@@ -977,13 +983,33 @@ const WSTRAP_FB={Metal:'Metal',Textile:'Textile',Leather:'Leather',Other:'Synthe
 // Cpassで実際に受理された実績のある枝(cpass_hs_dumpの10桁を8桁に丸めたもの)／弾かれた実績
 const WCP_OK=['91021110','91021125','91021195','91021280','91021920','91021980','91022110','91022190'];
 const WCP_NG={'91022150':'2026-07-28にCpassで実際に弾かれた枝です'};
+const WCP_ALT={'91012990':'9101299020'};   // .00が弾かれたら試す(Cpass辞書に在る同じ枝の10桁)
 
 const wStrapTB=m=>['Metal','Textile'].includes(m);       // 繊維・卑金属の枝か(ストラップ税率が別)
-// 「金銀めっきケース」の枝。無垢の貴金属は9102ではなく9101なのでここには入れない
+// 「金銀めっきケース」の枝(9102のまま)。★無垢と金張りは 9101 に落ちるのでここには入れない
 const wPlated=c=>['Gold-Plated Steel','Silver-Plated Metal','Two-tone (Steel and Gold-Plated)'].includes(c);
-function watchCodeOf(pk,jw,tb,plated){
+/* ★9101＝「case of precious metal or of metal clad with precious metal」の腕時計。
+   無垢(Solid)はもちろん、金張り／ゴールドフィルド／ロールドゴールド(機械的に貼り付けた被覆＝clad)も9101。
+   電気めっき(GP/GEP)は clad ではないので9102のまま＝ここが実物で一番間違えやすい。
+   9101はストラップ素材でもケースめっきでも枝が分かれない(税率は「ケースとバンド」をまとめて計算)。 */
+const wPrecious=c=>['Solid Gold','Solid Platinum','Solid Silver','Gold-Filled / Rolled Gold'].includes(c);
+function watchCodeOf(pk,jw,tb,plated,precious){
   const jw01=jw==='0-1 Jewels';
   let code='',note='';
+  if(precious){
+    if(pk==='q_analog')      code = jw01?'9101.11.40.00':'9101.11.80.00';
+    else if(pk==='q_digital')code = '9101.19.20.80';                       // 液晶のみ(10桁が末端)
+    else if(pk==='q_combi')  code = jw01?'9101.19.40.00':'9101.19.80.00';
+    else if(pk==='auto')     code = (jw==='over 17 Jewels')?'9101.21.50.00':'9101.21.80.00';
+    else{
+      if(jw01) code='9101.29.10.00';
+      else if(jw==='2 to 7 Jewels') code='9101.29.20.00';
+      else if(jw==='8 to 17 Jewels'){ code='9101.29.50.00';
+        note='※8〜17石はムーブメントが$15以下だとさらに細分（9101.29.30／.40）。$15超を前提とした代表コードです。'; }
+      else code='9101.29.90.00';
+    }
+    return {code,note,precious:true};
+  }
   if(pk==='q_digital'){ code='9102.12.80.00'; }                       // 液晶のみ
   else if(pk==='q_combi'){                                            // 針＋液晶
     code = jw01 ? (tb?'9102.19.20.00':'9102.19.40.00') : (tb?'9102.19.60.00':'9102.19.80.00');
@@ -1014,6 +1040,48 @@ function wRecJewels(pk){
 }
 
 const WNV={power:'',jewels:'',strap:'',strapTxt:'',embossed:false,caseMat:''};
+/* ★カードのナビとウォッチシート欄は「同じ1つの仕様」を2か所で表示している＝双方向に同期する。
+   WSHEET はウォッチシート側(IIFE)が自分の関数を差し込むフック。wSyncing は往復ループ止め。 */
+let WSHEET=null, wSyncing=false;
+function wnvRedraw(){   // ナビを描き直す(出す欄そのものが変わるので innerHTML ごと)
+  const nav=document.querySelector('#results .wnav');
+  if(nav) nav.innerHTML='<div class="wnavh">🕐 実物を見て選んでください <span class="g">— 選ぶと下の申告名称・HTSコード・配送が決まります</span></div>'+wnvNavHTML();
+  wnvApply();
+}
+// カード → ウォッチシート
+function wnvPushToSheet(){
+  if(!WSHEET||wSyncing) return; wSyncing=true;
+  try{
+    const g=WSHEET.g, R=wnvResolve(), prevPower=g('ws_power').value;
+    if(R.pk){ g('ws_power').value=R.P.ws; g('ws_disp').value=R.P.disp; }
+    if(R.jewels) g('ws_jewels').value=R.jewels;          // 推奨値で補ったものは実際の値を入れる
+    if(WNV.caseMat) g('ws_case_mat').value=WNV.caseMat;
+    if(WNV.strap){
+      g('ws_strap_mat').value=WNV.strap;
+      WSHEET.applyStrap();                                // 先に詳細selectを作り直してから値を入れる
+      g('ws_strap_txt').value=WNV.strapTxt||'';
+      g('ws_embossed').checked=!!WNV.embossed;
+      WSHEET.strapInfo();
+    }
+    // 按分比率の既定は駆動方式が変わった時だけ入れ直す(手で直した比率を消さない)
+    if(g('ws_power').value!==prevPower) WSHEET.applyDefaults();
+    WSHEET.cpassBatt(); WSHEET.compute();
+  } finally { wSyncing=false; }
+}
+// ウォッチシート → カード
+function wnvPullFromSheet(){
+  if(!WSHEET||wSyncing) return; wSyncing=true;
+  try{
+    const g=WSHEET.g;
+    WNV.power=WSHEET.powerKey();
+    WNV.jewels=g('ws_jewels').value;
+    WNV.strap=g('ws_strap_mat').value;
+    WNV.strapTxt=g('ws_strap_txt').value||'';
+    WNV.embossed=!!g('ws_embossed').checked;
+    WNV.caseMat=g('ws_case_mat').value;
+    wnvRedraw();
+  } finally { wSyncing=false; }
+}
 // 実際に使う値(推奨で補ったものを含む)と、その理由
 function wnvResolve(){
   const pk=WNV.power, P=pk?WPOWER[pk]:null;
@@ -1030,12 +1098,7 @@ function wnvResolve(){
   if(!WNV.caseMat) r.miss.push('ケース素材');
   if(WNV.caseMat==='Unknown') r.why.push('ケース素材：分からない場合は「金銀めっきでない」枝で算出します（金色でなければ、ほぼこれで合っています）。');
   if(WNV.strap==='Leather'&&!WNV.strapTxt) r.miss.push('革の種類（動物）');
-  if(WNV.caseMat==='Solid Precious Metal'){
-    r.stop='<b>🛑 出荷前に運営へ確認（このまま発送しない）</b>'
-      +'<div class="pick">金・プラチナ無垢のケースは、このカードのコード（9102）では申告できません</div>'
-      +'<div class="why">HTS <b>9101</b>（case of precious metal…）が別に立っていて、税率も枝も違います。'
-      +'メッキ（金色のコーティング）なら9102のままで正しいので、裏ぶたの刻印（<code>750</code>／<code>18K</code>／<code>PT900</code>／<code>SILVER</code> など）や重さで無垢かメッキかを確かめてください。</div>';
-  } else if(WNV.strap==='Leather'&&WNV.strapTxt==='__ESC__'){
+  if(WNV.strap==='Leather'&&WNV.strapTxt==='__ESC__'){
     r.stop='<b>🛑 出荷前に運営へ確認（このまま発送しない）</b>'
       +'<div class="pick">動物の種類が特定できない革は出せません</div>'
       +'<div class="why">爬虫類革（アリゲーター・クロコダイル・リザード・ヘビ）、オーストリッチ、スティングレイは<b>CITES（ワシントン条約）対象</b>で、米国輸入には USFWS の申告（Form 3-177）が必要です。無申告で送ると<b>差し押さえ</b>になります。</div>'
@@ -1043,9 +1106,9 @@ function wnvResolve(){
   }
   r.ready = !!pk && !r.miss.length && !r.stop;
   if(r.ready){
-    const tb=wStrapTB(WNV.strap), plated=wPlated(WNV.caseMat);
-    const c=watchCodeOf(pk,r.jewels,tb,plated);
-    r.code=c.code; r.note=c.note; r.tb=tb; r.plated=plated;
+    const tb=wStrapTB(WNV.strap), plated=wPlated(WNV.caseMat), prec=wPrecious(WNV.caseMat);
+    const c=watchCodeOf(pk,r.jewels,tb,plated,prec);
+    r.code=c.code; r.note=c.note; r.tb=tb; r.plated=plated; r.precious=prec;
   }
   return r;
 }
@@ -1088,7 +1151,7 @@ function wnvNavHTML(){
    ${wnvStrapTxtHTML()}
    <div class="wnf"><label>④ ケース素材（本体） <span class="req">*</span></label>
      <select data-wnv="caseMat" class="${WNV.caseMat?'':'need'}">${wOpt('','— 選択してください —',WNV.caseMat)}${WCASE.map(o=>wOpt(o[0],o[1],WNV.caseMat)).join('')}</select>
-     <div class="wnhint">金銀<b>メッキ</b>かどうかで枝が変わります（無垢の貴金属は別コード＝運営へ）。</div></div>
+     <div class="wnhint">金銀<b>メッキ</b>かどうかで枝が変わります。<b>無垢（18K・750・PT900・925）と金張り（GF・RGP）は 9101</b>、<b>電気めっき（GP・GEP）は 9102</b>＝裏ぶたの刻印で見分けます。</div></div>
   </div>
   <details class="wnhow"><summary>駆動方式の見分け方（クォーツ／自動巻／手巻き）</summary>
    <div class="wnhowb">
@@ -1117,17 +1180,29 @@ function wnvApply(){
     const dig=nd(R.code), r8=dig.slice(0,8), rate=WRATES[r8]||'';
     const cp = WCP_NG[r8] ? `<div class="wncp ng">⚠️ ${esc(WCP_NG[r8])}。Cpassで通らなければ下の候補コードを試し、それでも駄目なら運営へ連絡してください。</div>`
       : WCP_OK.includes(r8) ? '<div class="wncp ok">✅ Cpassで受理された実績のある枝です</div>'
+      : WCP_ALT[r8] ? `<div class="wncp unk">・Cpass未検証。弾かれたら同じ枝の <b>${esc(WCP_ALT[r8])}</b> を試し、それでも駄目なら運営へ連絡してください。</div>`
       : '<div class="wncp unk">・Cpass未検証の枝です（弾かれたら運営へ連絡してください）</div>';
+    // 9101(貴金属ケース)は9102と見出しが違う＝迷いやすいので、その場で理由を出す
+    const pmBox = R.precious
+      ? '<div class="wnpm">💡 <b>貴金属のケースなので 9101</b>（9102ではありません）。'
+        +'HTSの見出しが <i>case of precious metal or of metal clad with precious metal</i> で別に立っています。'
+        +'<b>9101はストラップ素材やメッキで枝が分かれません</b>（税率は「ケースとバンド」をまとめて計算）。'
+        +'<br><b>電気めっき（GP・GEP）は 9101 ではなく 9102</b>です。裏ぶたの刻印で確かめてください（'
+        +'<code>18K</code>／<code>750</code>／<code>PT900</code>／<code>925</code>＝無垢、<code>GF</code>／<code>RGP</code>／<code>1/20 12K</code>＝金張り＝どちらも9101）。</div>'
+      : '';
     // 液晶のみ(9102.12.80)はストラップでもケースでも枝が変わらないので、効いていない軸は出さない
     const chip=t=>`<span class="br">${esc(t)}</span>`;
     const strapJa = WNV.strap==='No Band' ? 'バンドなし' : (R.tb?'金属・繊維ベルト':'革などそれ以外');
     const br = R.pk==='q_digital'
-      ? chip('デジタル（液晶のみ）')+' <span class="g">— 液晶のみは宝石数・ストラップ・ケースで枝が変わりません</span>'
+      ? chip('デジタル（液晶のみ）')+(R.precious?' × '+chip('貴金属ケース'):'')+' <span class="g">— 液晶のみは宝石数・ストラップで枝が変わりません</span>'
+      : R.precious
+      ? chip(R.P.ja.replace(/（.*/,''))+' × '+chip((WJEWELS.find(x=>x[0]===R.jewels)||['',''])[1].replace(/（.*/,''))
+        +' × '+chip('貴金属ケース')+' <span class="g">— 9101はストラップ素材で枝が変わりません</span>'
       : chip(R.P.ja.replace(/（.*/,''))+' × '+chip((WJEWELS.find(x=>x[0]===R.jewels)||['',''])[1].replace(/（.*/,''))
         +' × '+chip(strapJa)+(dig.indexOf('910211')===0?' × '+chip(R.plated?'金銀めっきケース':'めっきでないケース'):'');
     g('wnv_code').innerHTML=`<span class="code copyable" tabindex="0" role="button" data-copy="${dig}">${dig}</span>
       <span class="sub2">HS6 <span class="code copyable hs6" tabindex="0" role="button" data-copy="${esc(R.code.slice(0,7))}">${esc(R.code.slice(0,7))}</span>${rate?' ／ 参考税率 <b>'+esc(rate)+'</b>':''}</span>
-      <div class="wnwhy">▶ この枝になる理由：${br}${R.note?'<br>'+esc(R.note):''}${R.why.length?'<br>'+R.why.map(esc).join('<br>'):''}</div>${cp}`;
+      <div class="wnwhy">▶ この枝になる理由：${br}${R.note?'<br>'+esc(R.note):''}${R.why.length?'<br>'+R.why.map(esc).join('<br>'):''}</div>${pmBox}${cp}`;
     g('wnv_opts').innerHTML = it?optsTable(it.opts,R.code):'';
   }
   const ship = !R.pk ? '👆 駆動方式を選ぶと、エコノミーで送れるかが分かります'
@@ -1216,9 +1291,9 @@ function render(){
       // 成人衣料は16 CFR 1610が適用されるので「規則が適用されない(Disclaim A)」ではなく素材免除(Disclaim B)が本来の根拠
       // 公式リスト掲載のアパレル(cpsccat=Clothing)も同じ根拠になる
       // 中古の成人向けアパレルは Used と Adult Apparel with: のどちらでも成立する(Cpass運用マニュアル
-      // 「免除条件」が3条件を並列に列挙)。全品中古なので Used は常に成立し、生地重量の実測が要らない
+      // 「免除条件」が3条件を並列に列挙)。中古であれば Used は常に成立し、生地重量の実測が要らない
       : (it.v==='vol'||it.cpsccat==='Clothing')
-        ? '<code>Adult Product</code> ＞ <code>Used</code>（全品中古なので常に成立。生地の重量を測る必要はありません）'
+        ? '<code>Adult Product</code> ＞ <code>Used</code>（<b>中古なら常に成立</b>。生地の重量を測る必要はありません）'
           + '<br>　<span class="g">別ルート：<code>Adult Apparel with:</code>（素材条件＝16 CFR 1610.1(d)・Disclaim B。新品でも使えるが素材/重量の確認が要る）</span>' : '';
     const eline = etype?`<br>▶ <b>Cpassの免除選択</b>：${etype}`:'';
     const cpsc = it.v==='exempt'
@@ -1301,23 +1376,9 @@ function render(){
     </div>`;}).join('');
   wnvApply();          // 腕時計カードが出ていれば、保持している選択を反映し直す
 }
-/* ウォッチシートへ飛ぶときは、カードで選んだ仕様をそのまま流し込む(同じことを二度聞かない) */
+/* ウォッチシートへ飛ぶ。仕様はカードを触った時点で同期済みなので、ここでは押し込み直して移動するだけ */
 function jumpToWs(){const s=document.querySelector('.wsec');if(!s)return;
-  const g=id=>document.getElementById(id);
-  const R=wnvResolve();
-  if(R.pk&&g('ws_power')){
-    g('ws_power').value=R.P.ws; g('ws_disp').value=R.P.disp;
-    if(R.jewels) g('ws_jewels').value=R.jewels;
-    if(WNV.caseMat&&WNV.caseMat!=='Unknown') g('ws_case_mat').value=WNV.caseMat;
-    if(WNV.strap){ g('ws_strap_mat').value=WNV.strap;
-      g('ws_strap_mat').dispatchEvent(new Event('change'));     // 詳細selectを作り直す
-      if(WNV.strapTxt) g('ws_strap_txt').value=WNV.strapTxt;
-      g('ws_embossed').checked=!!WNV.embossed;
-      g('ws_strap_txt').dispatchEvent(new Event('change'));
-    }
-    ['ws_power','ws_jewels','ws_case_mat'].forEach(id=>g(id).dispatchEvent(new Event('change')));
-    toast('カードで選んだ仕様を引き継ぎました');
-  }
+  if(WNV.power){ wnvPushToSheet(); toast('カードで選んだ仕様を引き継ぎました'); }
   s.scrollIntoView({block:'start'});            // 即時(長距離のsmoothは環境により不発)
   const t=document.getElementById('ws_total');if(t)t.focus({preventScroll:true});}
 /* 腕時計ナビの選択。selectを作り直すのはストラップ詳細だけ＝他の選択が飛ばない */
@@ -1330,11 +1391,9 @@ $('#results').addEventListener('change',e=>{
     if(k==='strap') WNV.strapTxt='';                   // 素材を変えたら詳細は選び直し
     if(k==='power'&&WNV.power==='q_digital') WNV.jewels='';
   }
-  if(k==='strap'||k==='power'){                        // 出す欄そのものが変わるのでナビを描き直す
-    const nav=document.querySelector('#results .wnav');
-    if(nav) nav.innerHTML='<div class="wnavh">🕐 実物を見て選んでください <span class="g">— 選ぶと下の申告名称・HTSコード・配送が決まります</span></div>'+wnvNavHTML();
-  }
-  wnvApply();
+  if(k==='strap'||k==='power') wnvRedraw();            // 出す欄そのものが変わるので描き直す
+  else wnvApply();
+  wnvPushToSheet();                                    // ★ウォッチシート欄にも即反映する
 });
 $('#results').addEventListener('click',e=>{
   const fb=e.target.closest('.favbtn'); if(fb){toggleFav(fb.dataset.fav);return;}
@@ -1573,7 +1632,8 @@ render();renderFull();
   function computeWatchCode(){
     const jw=g('ws_jewels').value;
     const tb=strapTB(), plated=casePlated();
-    const r=watchCodeOf(wsPowerKey(),jw,tb,plated);   // ★カードのナビと同じ関数
+    const prec=wPrecious(g('ws_case_mat').value);
+    const r=watchCodeOf(wsPowerKey(),jw,tb,plated,prec);   // ★カードのナビと同じ関数
     const code=r.code, note=r.note;
     g('ws_hts').value=code;
     const rate=WRATES[nd(code).slice(0,8)]||'';
@@ -1581,10 +1641,10 @@ render();renderFull();
     const hn=g('ws_hts_note');
     if(hn){ const strapTxt=tb?'ストラップ=繊維/卑金属の枝':'ストラップ=その他(革/貴金属/樹脂等)の枝';
       const caseTxt=code.indexOf('9102.11')===0?(plated?'・金銀めっきケース':'・非めっきケース'):'';
-      // 無垢の貴金属ケースは9102ではなく9101(case of precious metal)＝ここでは出せない
-      const pm=g('ws_case_mat').value==='Solid Precious Metal'
-        ? '<br><b class="ng">🛑 金・プラチナ無垢のケースは 9101 の別コードです。このコードで発送せず運営へ確認してください</b>（メッキなら9102のままで正しい）。' : '';
-      hn.innerHTML='▶ '+esc(strapTxt+caseTxt)+(note?'<br>'+esc(note):'')+pm; }
+      // 貴金属(無垢・金張り)ケースは9101。ストラップ素材で枝が分かれないので上の説明は出さない
+      const prec2=wPrecious(g('ws_case_mat').value);
+      const pm=prec2?'▶ <b>貴金属ケース＝9101</b>（9102ではありません）。ストラップ素材やメッキで枝は分かれず、税率は「ケースとバンド」をまとめて計算します。電気めっき（GP・GEP）なら9102が正しいので刻印で確認を。':'';
+      hn.innerHTML=(prec2?pm:'▶ '+esc(strapTxt+caseTxt))+(note?'<br>'+esc(note):''); }
   }
   // 算出コードはクリックでコピー(各カードと同じ操作感)
   g('ws_hts').addEventListener('click',()=>{const v=g('ws_hts').value;if(v){if(navigator.clipboard)navigator.clipboard.writeText(v).catch(()=>{});toast('コピー: '+v);}});
@@ -1711,7 +1771,15 @@ render();renderFull();
     setTimeout(()=>window.print(),80);
   });
   applyDefaults();
-  applyCarrier();  // 初期(既定=DHL)でFedEx専用欄をグレーに
+  /* ★カードの腕時計ナビへ自分の関数を渡し、シート側の変更をカードへ返す(双方向同期)。
+     applyStrap は ws_strap_mat の change で先に走るので、pull はその後の値を読む */
+  WSHEET={g:g, applyStrap:applyStrap, strapInfo:strapInfo, applyDefaults:applyDefaults,
+          cpassBatt:cpassBatt, compute:computeWatchCode, powerKey:wsPowerKey};
+  ['ws_power','ws_disp','ws_jewels','ws_strap_mat','ws_strap_txt','ws_embossed','ws_case_mat']
+    .forEach(id=>g(id).addEventListener('change',wnvPullFromSheet));
+  applyCarrier();  // 初期(既定=FedEx)＝グレーアウトなし。DHLに変えるとFedEx専用欄が無効化される
+  (function(){const d=new Date(),z=n=>String(n).padStart(2,'0');   // ローカル日付(UTCにずらさない)
+    g('ws_date').value=d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate());})();
   applyStrap();    // 初期ストラップ詳細(既定=Metal)の選択肢を生成
   computeWatchCode();  // 初期HTSコードを算出表示
   cpassBatt();  // 初期CpaSS電池案内
