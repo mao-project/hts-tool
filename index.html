@@ -418,7 +418,7 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <div class="wrap">
 <h1>HTSコード・申告名称 検索 <span class="g">/ eBay米国輸出</span></h1>
 <p class="sub">商品名で検索 → Cpass申告名称・HTS/HSコードを<b>タップでコピー</b>。CPSC eFiling判定・参考関税率つき。</p>
-<p class="upd">最終更新日 <b id="upd">2026-07-31</b>／申告名称・HTSは自社マスター、関税/コード有効性はUSITC照合。更新は運営が実施</p>
+<p class="upd">最終更新日 <b id="upd">2026-08-03</b>／申告名称・HTSは自社マスター、関税/コード有効性はUSITC照合。更新は運営が実施</p>
 
 <details class="rules"><summary><b>使い方</b><span class="rsub">検索・お気に入り・判定バッジ・配送注意</span></summary>
 <ol>
@@ -697,14 +697,14 @@ const DATA = {"items": [{"name": "本（漫画以外）", "decl": "Used Book col
 let filt='all';
 const $=s=>document.querySelector(s);
 /* 最終更新日 = このページ自体の Last-Modified(＝GitHub Pagesへアップロードした日時／
-   ローカルHTMLならファイルの更新日時)。ヘッダが無い環境では生成日2026-07-31にフォールバック */
+   ローカルHTMLならファイルの更新日時)。ヘッダが無い環境では生成日2026-08-03にフォールバック */
 (function(){
   const d=new Date(document.lastModified), el=$('#upd');
   if(!el)return;
-  if(isNaN(d.getTime())){el.textContent='2026-07-31';return;}
+  if(isNaN(d.getTime())){el.textContent='2026-08-03';return;}
   const p=n=>String(n).padStart(2,'0');
   el.textContent=`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
-  el.title=`このページの公開日時: ${d.toLocaleString()}（データ生成 2026-07-31）`;
+  el.title=`このページの公開日時: ${d.toLocaleString()}（データ生成 2026-08-03）`;
 })();
 function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function nd(s){return (s||'').replace(/\D/g,'')}
@@ -721,6 +721,12 @@ const SYN={
  'えほん':['絵本'],'ずかん':['図鑑'],'しんぶん':['新聞'],'とけい':['時計','watch'],
  'うでどけい':['腕時計','watch'],'さいふ':['財布','wallet'],'かわざいふ':['革財布'],
  'ゆびわ':['指輪','ring'],'さら':['皿','plate','dish'],'こうすい':['香水','perfume','fragrance'],
+ // チョーカーは「ネックレス」で総称されがちだが別カード。しかも新しいカードは kw に
+ // 共通語リスト(指輪 ネックレス ピアス…)を持っていないので総称で引くと取りこぼす。→検索側で寄せる。
+ // ★一方向にする。逆(チョーカーで引いてネックレス全部が出る)は候補が薄まるだけなので入れない。
+ // 英語で打つ人もいるので necklace も同じ扱いにする(同じ語の入力違いで結果が変わると罠になる)
+ 'ねっくれす':['ネックレス','チョーカー','necklace','choker'],
+ 'necklace':['ネックレス','チョーカー','necklace','choker'],
  'せんす':['扇子'],'しきし':['色紙'],'めがね':['メガネ','眼鏡','glasses'],
  'かんばっじ':['缶バッジ','badge'],'ばっじ':['バッジ','缶バ','badge'],'あきびん':['空き瓶'],
  'あきばこ':['空き箱'],'おまもり':['お守り'],'てぬぐい':['手ぬぐい','手拭'],'こけし':['こけし'],
