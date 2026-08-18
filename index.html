@@ -612,7 +612,7 @@ Cpass画面：追跡番号・商品番号(eBay Item No.)を入力 → <b>「私�
 <div class="wsf"><label>電池の種類 <span class="opt">電池式のみ</span></label><select id="ws_batt_type"><option value="Unknown (button cell)">ボタン電池・種類不明（Unknown button cell）</option><option value="SR626SW (377)">SR626SW（377）</option><option value="SR621SW (364)">SR621SW（364）</option><option value="SR920SW (370/371)">SR920SW（370/371）</option><option value="SR927SW (395)">SR927SW（395）</option><option value="CR2016">CR2016</option><option value="CR2025">CR2025</option><option value="CR2032">CR2032</option><option value="LR44 / SR44">LR44・SR44</option><option value="N/A (mechanical)">該当なし・機械式（N/A）</option></select></div>
 <div class="wscpass" id="ws_cpass" style="grid-column:1/-1">駆動方式・電池種類を選ぶと、CpaSSの電池欄で選ぶものがここに出ます</div>
 <div class="wsf fx-only"><label>バックプレート素材 <span class="fxbadge">FedExのみ</span></label><select id="ws_backplate"><option value="Stainless Steel">ステンレス（Stainless Steel）</option><option value="Base Metal">卑金属（Base Metal）</option><option value="Plastic / Resin">プラスチック・樹脂（Plastic/Resin）</option><option value="Same as case">ケースと同じ（Same as case）</option><option value="Unknown">不明（Unknown）</option></select></div>
-<div class="wsf fx-only"><label>ケース原産国 <span class="fxbadge">FedExのみ</span> <span class="opt">任意</span></label><select id="ws_case_origin"><option value="">— 選択 —</option><option value="Japan">日本（Japan）</option><option value="China">中国（China）</option><option value="Switzerland">スイス（Switzerland）</option><option value="Hong Kong">香港（Hong Kong）</option><option value="South Korea">韓国（Korea）</option><option value="Taiwan">台湾（Taiwan）</option><option value="Germany">ドイツ（Germany）</option><option value="France">フランス（France）</option><option value="Unknown">不明（Unknown）</option></select></div>
+<div class="wsf fx-only"><label>ケース原産国 <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_case_origin"><option value="">— 選択 —</option><option value="Japan">日本（Japan）</option><option value="China">中国（China）</option><option value="Switzerland">スイス（Switzerland）</option><option value="Hong Kong">香港（Hong Kong）</option><option value="South Korea">韓国（Korea）</option><option value="Taiwan">台湾（Taiwan）</option><option value="Germany">ドイツ（Germany）</option><option value="France">フランス（France）</option><option value="Unknown">不明（Unknown）</option></select></div>
 <div class="wsf fx-only"><label>ストラップ原産国 <span class="fxbadge">FedExのみ</span> <span class="opt">任意</span></label><select id="ws_strap_origin"><option value="">— 選択 —</option><option value="Japan">日本（Japan）</option><option value="China">中国（China）</option><option value="Switzerland">スイス（Switzerland）</option><option value="Hong Kong">香港（Hong Kong）</option><option value="South Korea">韓国（Korea）</option><option value="Taiwan">台湾（Taiwan）</option><option value="Germany">ドイツ（Germany）</option><option value="France">フランス（France）</option><option value="Unknown">不明（Unknown）</option></select></div>
 <div class="wsf fx-only"><label>電池原産国 <span class="fxbadge">FedExのみ</span> <span class="opt">任意</span></label><select id="ws_batt_origin"><option value="">— 選択 —</option><option value="Japan">日本（Japan）</option><option value="China">中国（China）</option><option value="Switzerland">スイス（Switzerland）</option><option value="Hong Kong">香港（Hong Kong）</option><option value="South Korea">韓国（Korea）</option><option value="Taiwan">台湾（Taiwan）</option><option value="Germany">ドイツ（Germany）</option><option value="France">フランス（France）</option><option value="Unknown">不明（Unknown）</option></select></div>
 
@@ -1594,7 +1594,7 @@ render();renderFull();
     sel.innerHTML='<option value="">— 未選択 —</option>'+list.map(o=>'<option value="'+esc(o[0])+'">'+esc(o[1])+'</option>').join('');
     if(list.some(o=>o[0]===prev)) sel.value=prev;                       // 素材を戻した時に選択を保つ
     sel.disabled = (mat==='No Band');
-    g('ws_strap_txt_lb').innerHTML = lea ? '革の種類（動物）<span class="req">*</span>' : 'ストラップ詳細 <span class="opt">任意</span>';
+    const oth=g('ws_strap_mat').value==='Other'; g('ws_strap_txt_lb').innerHTML = lea ? '革の種類（動物）<span class="req">*</span>' : oth ? 'ストラップの材質 <span class="req">*</span>' : 'ストラップ詳細 <span class="opt">任意</span>';
     g('ws_emb_wrap').style.display = lea ? '' : 'none';
     if(!lea) g('ws_embossed').checked=false;
     if(!lea) sel.closest('.wsf').classList.remove('invalid');
@@ -1663,7 +1663,7 @@ render();renderFull();
   // 主原産国を選ぶと他の原産国も追従(2回目以降も同期)。手動で変えた欄だけ独立させる
   const SUBORIG=['ws_case_origin','ws_strap_origin','ws_batt_origin'];
   const origLinked={ws_case_origin:true, ws_strap_origin:true, ws_batt_origin:true};
-  SUBORIG.forEach(id=>g(id).addEventListener('change',()=>{origLinked[id]=false;}));  // 手動変更→追従解除
+  SUBORIG.forEach(id=>g(id).addEventListener('change',()=>{origLinked[id]=false; g(id).closest('.wsf').classList.remove('invalid');}));  // 手動変更→追従解除
   g('ws_mov_origin').addEventListener('change',()=>{
     const v=g('ws_mov_origin').value;
     if(v) SUBORIG.forEach(id=>{ if(origLinked[id]) g(id).value=v; });  // 追従中の欄は毎回同期
@@ -1734,9 +1734,17 @@ render();renderFull();
   // 必須(日付/会社名/氏名/総額)が空ならプリントさせない(空欄のまま出力する事故を防ぐ)
   function wsValidate(){
     const req=[['ws_date','日付'],['ws_company','会社名'],['ws_name','氏名'],['ws_total','総額']];
-    if(g('ws_carrier').value==='fedex') req.push(['ws_mov_origin','原産国']);  // FedExは原産国が税関必須
+    // FedExは原産国4つとも税関必須。ケース未記入で差し戻された実例あり(2026-08 AWB875714104828)
+    if(g('ws_carrier').value==='fedex'){
+      req.push(['ws_mov_origin','ムーブメント原産国']);
+      req.push(['ws_case_origin','ケース原産国']);
+      if(g('ws_strap_mat').value!=='No Band') req.push(['ws_strap_origin','ストラップ原産国']);
+      if(g('ws_power').value==='batt') req.push(['ws_batt_origin','電池の原産国']);
+    }
     // 革は動物の種類まで書かないと米税関に止められる(2026-07実例)→必須。特定不能(__ESC__)は運営確認で発行停止
     if(g('ws_strap_mat').value==='Leather') req.push(['ws_strap_txt','革の種類（動物）']);
+    // FedEx様式のバンド欄にOtherの選択肢が無い＝具体名(Silicone等)まで書かせる
+    if(g('ws_strap_mat').value==='Other') req.push(['ws_strap_txt','ストラップの材質']);
     const miss=[];
     req.forEach(([id,label])=>{
       const el=g(id), wrap=el.closest('.wsf');
