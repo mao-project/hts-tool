@@ -388,6 +388,17 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 .wshts input{background:var(--safeBg);border-color:#bcdcc4;font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--ink)}
 .wshint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
 #ws_hts_rate{font-size:12px;color:var(--safe);font-weight:700}
+/* ★FedExの様式に合わせた刷り物＝小行のぶら下げ・1枚に複数本の列 */
+.wsheet td.fxl{white-space:normal}
+.wsheet td.fxl.i1{padding-left:18px}
+.wsheet td.fxl.i2{padding-left:34px}
+.wsheet table.fxfoot{margin-top:14px;width:46%}
+/* ★この荷物に足した時計の札 */
+#ws_chips{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0 0}
+.wschip{font-size:12px;background:var(--exemptBg);color:var(--exempt);border-radius:4px;padding:3px 8px}
+.wschip b{cursor:pointer;margin-left:4px}
+.wschipnow{font-size:12px;color:var(--ink2)}
+#ws_addnote{font-size:12px;color:var(--ink2)}
 .wscpass{grid-column:1/-1;border-radius:8px;padding:10px 12px;margin-top:4px;font-size:13px;line-height:1.55}
 .wscpass.none{background:#e8f5e9;border:1px solid #2e7d32}
 .wscpass.li{background:#fff4e5;border:1px solid #e08600}
@@ -622,7 +633,9 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <div class="wsf wshts" style="grid-column:1/-1"><label>HTSコード <span class="autobadge">自動算出</span> <span class="opt">クリックでコピー</span> <span class="wsnote">駆動方式・宝石数・ストラップ素材・ケースめっきから自動で決まります（属性から算出するので矛盾しません）</span></label><input id="ws_hts" placeholder="属性を選ぶと自動表示" readonly title="クリックでコピー"><div class="wshint" id="ws_hts_rate"></div><div class="wshint" id="ws_hts_note"></div></div>
 <div class="wsf fx-only"><label>数量 Quantity <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><input id="ws_qty" type="number" min="1" value="1"></div>
 <div class="wsf fx-only"><label>時計スタイル <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_style"><option value="Wrist">腕時計（Wrist）</option><option value="Pocket">懐中時計（Pocket）</option><option value="Other">その他（Other）</option></select></div>
+<div class="wsf fx-only" id="ws_style_txt_wrap" style="display:none"><label>時計スタイル（Other の中身）<span class="fxbadge">FedExのみ</span></label><input id="ws_style_txt" placeholder="例: Table clock"></div>
 <div class="wsf fx-only"><label>主機能 Function <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_func"><option value="timekeeping">計時（timekeeping）</option><option value="GPS">GPS</option><option value="heart monitor">心拍（heart monitor）</option><option value="pedometer">歩数計（pedometer）</option><option value="other">その他（other）</option></select></div>
+<div class="wsf fx-only" id="ws_func_txt_wrap" style="display:none"><label>主機能（other の中身）<span class="fxbadge">FedExのみ</span></label><input id="ws_func_txt" placeholder="例: altimeter"></div>
 <div class="wsf fx-only"><label>表示 Display <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_disp"><option value="Analog (mechanical display)">アナログ（Analog）</option><option value="Digital (Optoelectronic)">デジタル（Digital）</option><option value="Analog/Digital">アナログ＋デジタル</option></select></div>
 <div class="wsf fx-only"><label>ムーブメント12mm厚×50mm超 <span class="fxbadge">FedExのみ</span> <span class="req">*</span></label><select id="ws_size"><option value="No">いいえ（No）</option><option value="Yes">はい（Yes）</option></select></div>
 <div class="wsf fx-only"><label>ムーブメント原産国（主）<span class="fxbadge">FedExのみ</span> <span class="req">*</span> <span class="wsnote">選ぶと他の原産国にも自動反映（個別に上書き可）。特定できなければ「不明」を選ぶ（空欄不可）</span></label><select id="ws_mov_origin"><option value="">— 選択 —</option><option value="Japan">日本（Japan）</option><option value="China">中国（China）</option><option value="Switzerland">スイス（Switzerland）</option><option value="Hong Kong">香港（Hong Kong）</option><option value="South Korea">韓国（Korea）</option><option value="Taiwan">台湾（Taiwan）</option><option value="Germany">ドイツ（Germany）</option><option value="France">フランス（France）</option><option value="Italy">イタリア（Italy）</option><option value="Unknown">不明（Unknown）</option></select></div>
@@ -655,10 +668,13 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <div class="cell"><span>Battery</span><b id="ws_v_batt">0</b></div>
 </div>
 <div class="wswarn" id="ws_warn"></div>
+<div id="ws_chips"></div>
 <div class="wsbtns">
 <button type="button" class="wsbtn" id="ws_defbtn">駆動方式に合う比率に戻す</button>
+<button type="button" class="wsbtn" id="ws_addbtn">＋ この荷物にもう1本 足す</button>
 <button type="button" class="wsbtn print" id="ws_printbtn">🖨 ワークシートを表示して印刷 / PDF保存</button>
 </div>
+<div id="ws_addnote"></div>
 <div class="wsdone" id="ws_done"></div>
 </div>
 
@@ -1776,7 +1792,7 @@ render();renderFull();
   function box(on){return on?'[ X ]':'[&nbsp;&nbsp;&nbsp;]';}
   function ln(v){return '<span class="u">'+E(v)+'</span>';}
   function dhlSheet(d){
-    const p=g('ws_power').value, mech=['mech','auto','manual'].includes(p), batt=isBatt();
+    const p=d.powerKey, mech=['mech','auto','manual'].includes(p), batt=d.isBatt;  // ★足した分も刷るので画面を見ない
     return '<div class="wsheet"><h2>WATCH / CLOCK WORKSHEET</h2>'
       +'<div class="row">From: '+ln(d.company)+' &nbsp;&nbsp; Date: '+ln(d.date)+'</div>'
       +'<div class="row">Airway bill#: '+ln(d.awb)+'</div>'
@@ -1800,40 +1816,61 @@ render();renderFull();
       +'<div class="note">HTS information for entry (For DHL use only): xxxx.xx.xx<b>10</b>=Movement / <b>20</b>=Case / <b>30</b>=Strap / <b>40</b>=Power/Battery</div>'
       +'</div>';
   }
-  function fedexSheet(d){
-    const rows=[
-      ['Style name / No / Reference', d.ref],
-      ['Style of watch', g('ws_style').value],
-      ['Quantity', g('ws_qty').value],
-      ['HTSUS Number (if known)', d.hts],
-      ['Primary function', g('ws_func').value],
-      ['How is the watch powered', POWER_EN[g('ws_power').value]||''],
-      ['Movement / Display type', g('ws_disp').value],
-      ['Movement over 12mm thick and 50mm wide?', g('ws_size').value],
-      ['Number of Jewels in Movement', g('ws_jewels').value],
-      ['Country of Origin of Movement', d.movOrigin],
-      ['Material of Band (Strap)', d.strapMat],
-      ['Country of Origin of Band (Strap)', d.strapOrigin],
-      ['Material of Case', d.caseMat],
-      ['Country of Origin of Case', d.caseOrigin],
-      ['Material of Backplate', d.backplate],
-      ['Type of Battery', d.battType],
-      ['Country of Origin of Battery', d.battOrigin],
-      ['Value — Movement', d.cur+' '+fmt(d.v[0])],
-      ['Value — Case', d.cur+' '+fmt(d.v[1])],
-      ['Value — Strap', d.cur+' '+fmt(d.v[2])],
-      ['Value — Battery', d.cur+' '+fmt(d.v[3])],
-      ['Total Watch Value', d.cur+' '+fmt(d.tot)],
-    ];
+  /* ★FedEx の雛形（空欄PDF・3ページ・Watch 1〜8）と同じ行・同じ小行・同じ並び（2026-11-27・👤GO）。
+     ⛔行を足さない・減らさない＝「向こうの様式で出す」のが目的（出す度に様式を送れと言われないため）。
+     ・HTSUSは雛形に4行あるが、当方が自動算出するのは1本だけ＝1行目だけ埋める。
+       ⛔部品ごとの番号を推測で埋めない（雛形も "if known"＝分かる物だけ）。
+     ・4行目の "(if know)" は雛形そのままの字＝⛔直さない（向こうの様式に合わせる）。
+     ・当方にしか無い「電池の種類」は雛形に行が無い＝刷らない（画面とDHLの様式には残る）。 */
+  const FX_ROWS=[
+    ['Style name/No/Reference', w=>w.ref],
+    ['Style of watch', w=>w.style],
+    ['If Other, provide type', w=>(w.style==='Other'?w.styleTxt:''), 1],
+    ['Quantity', w=>w.qty],
+    ['HTSUS Number (if known)', w=>w.hts],
+    ['HTSUS Number (if known)', w=>''],
+    ['HTSUS Number (if known)', w=>''],
+    ['HTSUS Number (if know)', w=>''],
+    ['What is the primary function of watch', w=>w.func],
+    ['If Other, provide primary function', w=>(w.func==='other'?w.funcTxt:''), 1],
+    ['How is the watch powered', w=>w.power],
+    ['Country of Origin of the battery', w=>w.battOrigin],
+    ['Movement/ Display type', w=>w.disp],
+    ["Is the movement's size over 12mm in thickness and 50mm in width, length, or diameter?", w=>w.size],
+    ['Number of Jewels in Movement', w=>w.jewels],
+    ['Country of Origin of Movement', w=>w.movOrigin],
+    ['Material of Band (Strap)', w=>w.strapKind],   // ★親の行は素材の種類だけ＝細かい所は下の小行（雛形の作り）
+    ['If Leather, provide type of animal', w=>(w.strapKind==='Leather'?w.strapDetail:''), 1],
+    ['If Metal, provide type of metal', w=>(w.strapKind==='Metal'?w.strapDetail:''), 1],
+    ['If Other, provide material', w=>((w.strapKind!=='Leather'&&w.strapKind!=='Metal')?w.strapDetail:''), 1],
+    ['Country of Origin of Band (Strap)', w=>w.strapOrigin],
+    ['Material of Case', w=>w.caseMat],
+    ['If Other, provide material', w=>'', 1],
+    ['Country of Origin of Case', w=>w.caseOrigin],
+    ['Material of Backplate', w=>w.backplate],
+    ['If Other, provide material', w=>'', 1],
+    ['Value Breakout (amount and currency)', w=>''],
+    ['Movement', w=>w.cur+' '+fmt(w.v[0]), 2],
+    ['Case', w=>w.cur+' '+fmt(w.v[1]), 2],
+    ['Strap', w=>w.cur+' '+fmt(w.v[2]), 2],
+    ['Battery', w=>w.cur+' '+fmt(w.v[3]), 2],
+    ['Total Watch Value', w=>w.cur+' '+fmt(w.tot), 2]
+  ];
+  function fedexSheet(hdr,list){
+    const head='<tr><th style="width:38%"></th>'
+      +list.map((w,i)=>'<th>Watch '+(i+1)+'</th>').join('')+'</tr>';
+    const body=FX_ROWS.map(r=>'<tr><td class="fxl'+(r[2]?' i'+r[2]:'')+'">'+E(r[0])+'</td>'
+      +list.map(w=>'<td>'+E(r[1](w))+'</td>').join('')+'</tr>').join('');
     return '<div class="wsheet"><h2>FEDEX — WATCH WORKSHEET</h2>'
-      +'<div class="row">Company: '+ln(d.company)+' &nbsp; Name/Title: '+ln(d.name)+'</div>'
-      +'<div class="row">E-mail: '+ln(d.email)+' &nbsp; AWB Number: '+ln(d.awb)+' &nbsp; Date: '+ln(d.date)+'</div>'
-      +'<table><thead><tr><th style="width:46%">Field</th><th>Watch 1</th></tr></thead><tbody>'
-      +rows.map(r=>'<tr><td>'+E(r[0])+'</td><td>'+E(r[1])+'</td></tr>').join('')
-      +'</tbody></table>'
-      +'<div class="note">Up to 8 watches per sheet. Add a column for each additional watch.</div>'
-      +'</div>';
+      +'<table><thead>'+head+'</thead><tbody>'+body+'</tbody></table>'
+      +'<table class="fxfoot"><tbody>'
+      +'<tr><td class="fxl">Company Name</td><td>'+E(hdr.company)+'</td></tr>'
+      +'<tr><td class="fxl">Name and Title</td><td>'+E(hdr.name)+'</td></tr>'
+      +'<tr><td class="fxl">E-mail</td><td>'+E(hdr.email)+'</td></tr>'
+      +'<tr><td class="fxl">AWB Number</td><td>'+E(hdr.awb)+'</td></tr>'
+      +'</tbody></table></div>';
   }
+
   // 必須(日付/会社名/氏名/総額)が空ならプリントさせない(空欄のまま出力する事故を防ぐ)
   function wsValidate(){
     const req=[['ws_date','日付'],['ws_company','会社名'],['ws_name','氏名'],['ws_total','総額']];
@@ -1850,33 +1887,76 @@ render();renderFull();
     return miss;
   }
   ['ws_date','ws_company','ws_name','ws_total'].forEach(id=>g(id).addEventListener('input',()=>g(id).closest('.wsf').classList.remove('invalid')));
-  g('ws_printbtn').addEventListener('click',()=>{
-    // 動物の種類が特定できない革はシートを発行しない(牛革などで誤申告させないための停止)
-    if(g('ws_strap_mat').value==='Leather' && g('ws_strap_txt').value==='__ESC__'){
-      g('ws_strap_txt').closest('.wsf').classList.add('invalid');
-      g('ws_done').innerHTML='<span style="color:var(--warn)">🛑 革の種類が特定できないため発行できません。確かめてください（上の赤い案内を参照）。</span>';
-      g('ws_strap_info').scrollIntoView({block:'center'}); return;
-    }
-    const miss=wsValidate();
-    if(miss.length){ g('ws_done').innerHTML='<span style="color:var(--warn)">⚠️ 必須項目が未入力です：'+esc(miss.join('・'))+'（赤枠を埋めてください）</span>'; return; }
+  /* ★この荷物に足した時計（★刷る時は「ここ＋いま画面に入っている1本」＝最後の列は画面の物）。
+     ⛔入力欄を本数ぶん増やさない＝1組のまま「足す」で溜める（2026-11-27・👤GO）。 */
+  let WS_ADD=[];
+  function hdrOf(){ return {company:g('ws_company').value, date:g('ws_date').value,
+    awb:g('ws_awb').value, name:g('ws_name').value, email:g('ws_email').value}; }
+  function collectWatch(){
     const st=vals();
     const caseMat=(g('ws_case_mat').value.trim()||'Stainless Steel');  // datalist入力(英語)
-    const strapMat=(g('ws_strap_mat').value==='Leather' ? strapLeatherEN()   // 例: Embossed cowhide (bovine) leather
-      : (g('ws_strap_txt').value.trim()?g('ws_strap_mat').value+' ('+g('ws_strap_txt').value.trim()+')':g('ws_strap_mat').value));
-    const d={
-      company:g('ws_company').value, date:g('ws_date').value, awb:g('ws_awb').value,
-      name:g('ws_name').value, email:g('ws_email').value, ref:g('ws_ref').value,
-      hts:g('ws_hts').value, jewels:g('ws_jewels').value, movOrigin:g('ws_mov_origin').value,
+    const kind=g('ws_strap_mat').value;
+    const detail=(kind==='Leather' ? strapLeatherEN() : g('ws_strap_txt').value.trim());
+    const strapMat=(kind==='Leather' ? strapLeatherEN()
+      : (detail ? kind+' ('+detail+')' : kind));
+    return {
+      ref:g('ws_ref').value, style:g('ws_style').value, styleTxt:g('ws_style_txt').value,
+      qty:g('ws_qty').value, hts:g('ws_hts').value,
+      func:g('ws_func').value, funcTxt:g('ws_func_txt').value,
+      power:POWER_EN[g('ws_power').value]||'', powerKey:g('ws_power').value, isBatt:isBatt(),
+      disp:g('ws_disp').value, size:g('ws_size').value,
+      jewels:g('ws_jewels').value, movOrigin:g('ws_mov_origin').value,
+      strapKind:kind, strapDetail:detail, strapMat:strapMat, strapOrigin:g('ws_strap_origin').value,
       caseMat:caseMat, caseOrigin:g('ws_case_origin').value, backplate:g('ws_backplate').value,
-      strapMat:strapMat, strapOrigin:g('ws_strap_origin').value,
       battType:g('ws_batt_type').value, battOrigin:g('ws_batt_origin').value,
       cur:st.cur, v:st.v, tot:st.tot
     };
+  }
+  /* 発行の前に必ず通す2つ＝①特定できない革は止める ②必須の空欄を赤くする */
+  function wsGuard(){
+    if(g('ws_strap_mat').value==='Leather' && g('ws_strap_txt').value==='__ESC__'){
+      g('ws_strap_txt').closest('.wsf').classList.add('invalid');
+      g('ws_done').innerHTML='<span style="color:var(--warn)">🛑 革の種類が特定できないため発行できません。確かめてください（上の赤い案内を参照）。</span>';
+      g('ws_strap_info').scrollIntoView({block:'center'}); return false;
+    }
+    const miss=wsValidate();
+    if(miss.length){ g('ws_done').innerHTML='<span style="color:var(--warn)">⚠️ 必須項目が未入力です：'+esc(miss.join('・'))+'（赤枠を埋めてください）</span>'; return false; }
+    return true;
+  }
+  function wsChips(){
+    const el=g('ws_chips');
+    el.innerHTML = WS_ADD.length
+      ? WS_ADD.map((w,i)=>'<span class="wschip">'+(i+1)+'本目'+(w.ref?'：'+esc(w.ref):'')+' <b data-i="'+i+'" title="この1本を外す">✕</b></span>').join('')
+        +'<span class="wschipnow">'+(WS_ADD.length+1)+'本目＝いま入力中</span>'
+      : '';
+    el.querySelectorAll('b[data-i]').forEach(x=>x.addEventListener('click',()=>{
+      WS_ADD.splice(+x.getAttribute('data-i'),1); wsChips(); wsAddBtn();
+    }));
+  }
+  /* ⛔押せない時に釦を消さない＝灰色＋理由（1枚は雛形どおり8本まで） */
+  function wsAddBtn(){
+    const full=WS_ADD.length>=7;
+    g('ws_addbtn').disabled=full;
+    g('ws_addnote').textContent=full?'1枚に入るのは8本までです（FedExの様式に合わせています）':'';
+  }
+  g('ws_addbtn').addEventListener('click',()=>{
+    if(!wsGuard()) return;
+    WS_ADD.push(collectWatch());
+    g('ws_ref').value=''; g('ws_total').value=''; g('ws_qty').value='1';  // ★違う所だけ＝同じ所は残す
+    vals(); wsChips(); wsAddBtn();
+    g('ws_done').innerHTML='<span class="g">'+WS_ADD.length+'本目まで足しました。次の1本を入れて、最後に印刷してください（同じ所はそのまま残しています）。</span>';
+    g('ws_ref').focus();
+  });
+  g('ws_printbtn').addEventListener('click',()=>{
+    if(!wsGuard()) return;
+    const hdr=hdrOf(), list=WS_ADD.concat([collectWatch()]);
     let html='';
-    if(g('ws_carrier').value==='dhl'){ html=dhlSheet(d)+dhlSheet(d); }  // DHLは2枚提出
-    else { html=fedexSheet(d); }
+    if(g('ws_carrier').value==='dhl'){           // DHLは様式が別＝1本につき2枚（⛔今は変えない）
+      html=list.map(w=>{const d=Object.assign({},hdr,w); return dhlSheet(d)+dhlSheet(d);}).join('');
+    } else { html=fedexSheet(hdr,list); }
     g('ws_print').innerHTML=html;
-    g('ws_done').textContent='印刷ダイアログを開きました。宛先で「PDFに保存」を選べます'+(g('ws_carrier').value==='dhl'?'（DHLは2枚出力されます）':'')+'。';
+    g('ws_done').textContent='印刷ダイアログを開きました。宛先で「PDFに保存」を選べます'
+      +(g('ws_carrier').value==='dhl'?'（DHLは1本につき2枚 出力されます）':'（'+list.length+'本ぶんの列で出ます）')+'。';
     setTimeout(()=>window.print(),80);
   });
   applyDefaults();
@@ -1886,6 +1966,14 @@ render();renderFull();
           cpassBatt:cpassBatt, compute:computeWatchCode, powerKey:wsPowerKey};
   ['ws_power','ws_disp','ws_jewels','ws_strap_mat','ws_strap_txt','ws_embossed','ws_case_mat']
     .forEach(id=>g(id).addEventListener('change',wnvPullFromSheet));
+  /* 雛形の小行（If Other…）は、Other を選んだ時だけ欄を出して埋める＝普段は見えない */
+  function wsOther(){
+    g('ws_style_txt_wrap').style.display = (g('ws_style').value==='Other') ? '' : 'none';
+    g('ws_func_txt_wrap').style.display  = (g('ws_func').value==='other')  ? '' : 'none';
+  }
+  g('ws_style').addEventListener('change',wsOther);
+  g('ws_func').addEventListener('change',wsOther);
+  wsOther(); wsChips(); wsAddBtn();
   applyCarrier();  // 初期(既定=FedEx)＝グレーアウトなし。DHLに変えるとFedEx専用欄が無効化される
   (function(){const d=new Date(),z=n=>String(n).padStart(2,'0');   // ローカル日付(UTCにずらさない)
     g('ws_date').value=d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate());})();
