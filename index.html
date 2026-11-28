@@ -388,6 +388,7 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 .wshts input{background:var(--safeBg);border-color:#bcdcc4;font-weight:700;font-size:15px;letter-spacing:.02em;color:var(--ink)}
 .wshint{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
 #ws_hts_rate{font-size:12px;color:var(--safe);font-weight:700}
+#ext-slot:empty{display:none}
 /* ★FedExの様式に合わせた刷り物＝小行のぶら下げ・1枚に複数本の列 */
 .wsheet td.fxl{white-space:normal}
 .wsheet td.fxl.i1{padding-left:18px}
@@ -427,25 +428,30 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
   body>*{display:none!important}
   #ws_print,#ws_print *{display:revert!important;visibility:visible}
   #ws_print{display:block!important;position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;font-size:12px;font-family:Arial,Helvetica,sans-serif}
-  .wsheet{page-break-after:always;padding:26px 34px;box-sizing:border-box}
+  /* ★1枚に収める＝紙の余白は `@page`（刷る直前に運送会社ごとに差し込む）が持つ＝ここは余白を持たない */
+  .wsheet{page-break-after:always;break-inside:avoid;padding:0;box-sizing:border-box}
   .wsheet:last-child{page-break-after:auto}
-  .wsheet h2{text-align:center;font-size:15px;margin:0 0 14px;letter-spacing:.02em}
-  .wsheet .row{margin:7px 0;line-height:1.9}
+  .wsheet h2{text-align:center;font-size:14px;margin:0 0 9px;letter-spacing:.02em}
+  .wsheet .row{margin:4px 0;line-height:1.7}
   .wsheet .u{border-bottom:1px solid #000;padding:0 8px;min-width:130px;display:inline-block}
-  .wsheet .sec{font-weight:700;margin-top:13px}
+  .wsheet .sec{font-weight:700;margin-top:9px}
   .wsheet .ind{padding-left:24px}
   .wsheet .chk{font-family:monospace;font-weight:700}
-  .wsheet .note{font-size:9.5px;color:#333;margin-top:26px;border-top:1px solid #000;padding-top:6px}
-  .wsheet table{width:100%;border-collapse:collapse;font-size:10px;margin-top:6px}
-  .wsheet th,.wsheet td{border:1px solid #000;padding:3px 5px;text-align:left;vertical-align:top}
+  /* ⚠この行はDHLの雛形の覚え書き＝前は margin-top:26px で紙からこぼれ、1本につき1枚 増えていた（11-28） */
+  .wsheet .note{font-size:9.5px;color:#333;margin-top:12px;border-top:1px solid #000;padding-top:5px}
+  /* ⚠行の高さ＝`body` の `font:15px/1.6` が倍率として降りてくる＝9.5px でも 15.2px の行になる。
+     ★1枚に収める効きは、ここが一番 大きい（33行＝110px）＝⛔font-size を下げる前にこれ。 */
+  .wsheet table{width:100%;border-collapse:collapse;font-size:9.5px;line-height:1.3;margin-top:4px}
+  .wsheet th,.wsheet td{border:1px solid #000;padding:1.5px 4px;text-align:left;vertical-align:top}
   .wsheet th{background:#eee}
+  .wsheet table.fxfoot{margin-top:9px;width:52%;break-inside:avoid}
 }
 </style>
 
 <div class="wrap">
 <h1>HTSコード・申告名称 検索 <span class="g">/ eBay米国輸出</span></h1>
 <p class="sub">商品名で検索 → Cpass申告名称・HTS/HSコードを<b>タップでコピー</b>。CPSC eFiling判定・参考関税率つき。</p>
-<p class="upd">最終更新日 <b id="upd">2026-11-27</b>／申告名称・HTSはこのツールの台帳、関税率とコードの有効性はUSITC照合</p>
+<p class="upd">最終更新日 <b id="upd">2026-11-28</b>／申告名称・HTSはこのツールの台帳、関税率とコードの有効性はUSITC照合</p>
 
 <details class="rules"><summary><b>使い方</b><span class="rsub">検索・お気に入り・判定バッジ・配送注意</span></summary>
 <ol>
@@ -488,6 +494,7 @@ padding:10px 16px;border-radius:10px;font-size:12.5px;opacity:0;pointer-events:n
 <span class="chip" tabindex="0" data-f="check">⚠️ コード要確認</span>
 </div></div>
 <div class="count" id="count"></div>
+<div id="ext-slot"></div>
 <div id="results"></div>
 
 <div class="section">
@@ -753,14 +760,14 @@ const DATA = {"items": [{"name": "本（漫画以外）", "decl": "Used Book col
 let filt='all';
 const $=s=>document.querySelector(s);
 /* 最終更新日 = このページ自体の Last-Modified(＝GitHub Pagesへアップロードした日時／
-   ローカルHTMLならファイルの更新日時)。ヘッダが無い環境では生成日2026-11-27にフォールバック */
+   ローカルHTMLならファイルの更新日時)。ヘッダが無い環境では生成日2026-11-28にフォールバック */
 (function(){
   const d=new Date(document.lastModified), el=$('#upd');
   if(!el)return;
-  if(isNaN(d.getTime())){el.textContent='2026-11-27';return;}
+  if(isNaN(d.getTime())){el.textContent='2026-11-28';return;}
   const p=n=>String(n).padStart(2,'0');
   el.textContent=`${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}`;
-  el.title=`このページの公開日時: ${d.toLocaleString()}（データ生成 2026-11-27）`;
+  el.title=`このページの公開日時: ${d.toLocaleString()}（データ生成 2026-11-28）`;
 })();
 function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function nd(s){return (s||'').replace(/\D/g,'')}
@@ -1356,6 +1363,9 @@ function render(){
   const rawTerms=q.split(/[\s　]+/).filter(Boolean);          // ハイライト用(素の入力)
   const terms=rawTerms.map(nrm);
   renderFavs(); syncQBtns();
+  /* ★差し込み口＝凪の版だけが `NAGI_SEARCH_EXT` を持つ（焼き込みで入れる）。公開ページには実装が無い＝**何も起きない**。
+     🔴**ここ（頭）に置く**＝下の「0件」は `return` で抜けるので、終わりに置くと**番号を貼った時だけ呼ばれない**。 */
+  if(window.NAGI_SEARCH_EXT){ try{ window.NAGI_SEARCH_EXT(q, $('#ext-slot')); }catch(e){} }
   const hayOf=it=>HAYOF.get(it);
   const pool=DATA.items.filter(inFilt);
   let list=!terms.length?pool:pool.filter(it=>terms.every(t=>fhit(hayOf(it),t)));
@@ -1494,6 +1504,20 @@ function render(){
     </div>`;}).join('');
   wnvApply();          // 腕時計カードが出ていれば、保持している選択を反映し直す
 }
+
+/* ★差し込み口へ渡す小さな口＝**台帳の引き方はここ1つ**（⛔凪の側で引き直さない）。
+   match: 言葉 → 当たったカードの品名（多くて5つ）／pick: その品名で**いつもの検索**をする。 */
+window.HTS_API={
+  match(text){
+    const terms=String(text||'').split(/[\s　]+/).filter(Boolean).map(nrm).filter(Boolean);
+    if(!terms.length) return [];
+    const pool=DATA.items;
+    let list=pool.filter(it=>terms.every(t=>fhit(HAYOF.get(it),t)));
+    if(!list.length) list=pool.filter(it=>terms.some(t=>fhit(HAYOF.get(it),t)));
+    return list.slice(0,5).map(it=>it.name);
+  },
+  pick(name){ $('#q').value=name; render(); $('#q').scrollIntoView({block:'nearest'}); }
+};
 /* ウォッチシートへ飛ぶ。仕様はカードを触った時点で同期済みなので、ここでは押し込み直して移動するだけ */
 function jumpToWs(){const s=document.querySelector('.wsec');if(!s)return;
   if(WNV.power){ wnvPushToSheet(); toast('カードで選んだ仕様を引き継ぎました'); }
@@ -1857,7 +1881,8 @@ render();renderFull();
     ['Total Watch Value', w=>w.cur+' '+fmt(w.tot), 2]
   ];
   function fedexSheet(hdr,list){
-    const head='<tr><th style="width:38%"></th>'
+    // 本数が多い時だけ左の見出しを細く＝値の側が折れて紙からこぼれるのを防ぐ（実測・11-28）
+    const head='<tr><th style="width:'+(list.length>4?26:38)+'%"></th>'
       +list.map((w,i)=>'<th>Watch '+(i+1)+'</th>').join('')+'</tr>';
     const body=FX_ROWS.map(r=>'<tr><td class="fxl'+(r[2]?' i'+r[2]:'')+'">'+E(r[0])+'</td>'
       +list.map(w=>'<td>'+E(r[1](w))+'</td>').join('')+'</tr>').join('');
@@ -1947,23 +1972,63 @@ render();renderFull();
     g('ws_done').innerHTML='<span class="g">'+WS_ADD.length+'本目まで足しました。次の1本を入れて、最後に印刷してください（同じ所はそのまま残しています）。</span>';
     g('ws_ref').focus();
   });
+  /* ★紙の向きは運送会社ごとに違う＝刷る直前に `@page` を差し込む（2026-11-28）。
+     ⛔人の印刷設定に任せない＝👤が横向きで刷ったら、縦の様式（DHL）が紙からこぼれて1本につき1枚 増えた。 */
+  function wsPageCss(car){
+    let st=document.getElementById('ws_pagecss');
+    if(!st){ st=document.createElement('style'); st.id='ws_pagecss'; document.head.appendChild(st); }
+    // 余白 8mm＝8本（雛形の上限）でも長い行が折れても収まる所まで広げた（実測・11-28）
+    st.textContent='@page{size:A4 '+(car==='dhl'?'portrait':'landscape')+';margin:8mm 10mm}';
+  }
+  /* ★PDFの名前＝Chrome は「PDFに保存」の既定の名前を `document.title` から作る。
+     ∴ 刷る直前だけ英字の題へ差し替え、`afterprint` で元に戻す（画面の題は日本語のまま）。
+     ⛔日本語のままだと CPaSS に上げられない（👤2026-11-28）。
+     形＝`261128_<AWB番号>_Watch_Worksheet_FedEx`（日付YYMMDD＋AWB＝👤の控えの付け方＝後から探せる）。
+     ★番号は**AWB（FedExの追跡番号）**＝👤2026-11-28「FedEx の追跡番号だね」。⛔商品番号（Item ID）ではない。
+     ★AWB は任意の欄＝空の時だけ、次の順で落ちる（出所は WS_FN_KEYS の1行が持ち主）：
+       ①AWB ②**1本の時だけ**その時計の型番 ③どちらも無ければ番号を入れない。
+       ⛔2本以上で型番に落とさない＝刷るのは荷物ぜんぶなのに、名前が最後の1本の型番になり、
+         「この名前の物を探す」が当てにならなくなるため（本数は末尾の `2pcs` で分かる）。 */
+  const WS_FN_KEYS=['ws_awb','ws_ref'];
+  function wsAscii(v){ return (v||'').replace(/[^A-Za-z0-9]+/g,'').slice(0,24); }
+  function wsFileName(car,n){
+    const d=(g('ws_date').value||'').replace(/-/g,'');          // 2026-11-28 → 20261128
+    let key='';
+    for(const id of WS_FN_KEYS){
+      if(id==='ws_ref' && n>1) break;                           // ★2本以上は型番に落とさない
+      const v=wsAscii(g(id).value); if(v){ key=v; break; }
+    }
+    return [(d.length===8?d.slice(2):''), key,
+            'Watch_Worksheet_'+(car==='dhl'?'DHL':'FedEx'), (n>1?n+'pcs':'')]
+           .filter(Boolean).join('_');
+  }
   g('ws_printbtn').addEventListener('click',()=>{
     if(!wsGuard()) return;
+    const car=g('ws_carrier').value;
     const hdr=hdrOf(), list=WS_ADD.concat([collectWatch()]);
     let html='';
-    if(g('ws_carrier').value==='dhl'){           // DHLは様式が別＝1本につき2枚（⛔今は変えない）
+    if(car==='dhl'){                             // DHLは様式が別＝1本につき2枚（⛔今は変えない）
       html=list.map(w=>{const d=Object.assign({},hdr,w); return dhlSheet(d)+dhlSheet(d);}).join('');
     } else { html=fedexSheet(hdr,list); }
     g('ws_print').innerHTML=html;
+    wsPageCss(car);
+    const fn=wsFileName(car,list.length), was=document.title;
+    let done=false;
+    const restore=()=>{ if(done) return; done=true; document.title=was;
+                        window.removeEventListener('afterprint',restore); };
+    if(fn){ document.title=fn; window.addEventListener('afterprint',restore);
+            setTimeout(restore,120000); }    // 戻しの取りこぼしの保険（⛔早く戻すと名前が日本語に戻る）
     g('ws_done').textContent='印刷ダイアログを開きました。宛先で「PDFに保存」を選べます'
-      +(g('ws_carrier').value==='dhl'?'（DHLは1本につき2枚 出力されます）':'（'+list.length+'本ぶんの列で出ます）')+'。';
+      +(car==='dhl'?'（DHLは1本につき2枚・縦で出ます）':'（'+list.length+'本ぶんの列・横で出ます）')
+      +(fn?'。名前は '+fn+'.pdf です':'')+'。';
     setTimeout(()=>window.print(),80);
   });
   applyDefaults();
   /* ★カードの腕時計ナビへ自分の関数を渡し、シート側の変更をカードへ返す(双方向同期)。
      applyStrap は ws_strap_mat の change で先に走るので、pull はその後の値を読む */
   WSHEET={g:g, applyStrap:applyStrap, strapInfo:strapInfo, applyDefaults:applyDefaults,
-          cpassBatt:cpassBatt, compute:computeWatchCode, powerKey:wsPowerKey};
+          cpassBatt:cpassBatt, compute:computeWatchCode, powerKey:wsPowerKey,
+          fileName:wsFileName, pageCss:wsPageCss};   // ★名前と向きは物差しから呼べる所に出す
   ['ws_power','ws_disp','ws_jewels','ws_strap_mat','ws_strap_txt','ws_embossed','ws_case_mat']
     .forEach(id=>g(id).addEventListener('change',wnvPullFromSheet));
   /* 雛形の小行（If Other…）は、Other を選んだ時だけ欄を出して埋める＝普段は見えない */
